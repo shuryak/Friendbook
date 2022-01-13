@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Friendbook.Api", "Friendbook.Api\Friendbook.Api.csproj", "{B56BF7A2-8824-42D0-A43B-14E2BBBC56D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Friendbook.Domain", "Friendbook.Domain\Friendbook.Domain.csproj", "{20C2C7A0-CF87-4886-A3C0-DE7CCE1EBF60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Friendbook.DataAccess.PostgreSql", "Friendbook.DataAccess.PostgreSql\Friendbook.DataAccess.PostgreSql.csproj", "{F872265A-0DE4-4A48-B064-295263FB9CCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuryak.Friendbook.Tests", "Shuryak.Friendbook.Tests\Shuryak.Friendbook.Tests.csproj", "{D05DDD64-E2B4-48AB-A225-B7CDEBBC3BD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Friendbook.BusinessLogic", "Friendbook.BusinessLogic\Friendbook.BusinessLogic.csproj", "{32EFECD5-284B-452E-9510-B44CA52E7CD5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B56BF7A2-8824-42D0-A43B-14E2BBBC56D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B56BF7A2-8824-42D0-A43B-14E2BBBC56D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B56BF7A2-8824-42D0-A43B-14E2BBBC56D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B56BF7A2-8824-42D0-A43B-14E2BBBC56D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20C2C7A0-CF87-4886-A3C0-DE7CCE1EBF60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20C2C7A0-CF87-4886-A3C0-DE7CCE1EBF60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20C2C7A0-CF87-4886-A3C0-DE7CCE1EBF60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20C2C7A0-CF87-4886-A3C0-DE7CCE1EBF60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F872265A-0DE4-4A48-B064-295263FB9CCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F872265A-0DE4-4A48-B064-295263FB9CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F872265A-0DE4-4A48-B064-295263FB9CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F872265A-0DE4-4A48-B064-295263FB9CCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D05DDD64-E2B4-48AB-A225-B7CDEBBC3BD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D05DDD64-E2B4-48AB-A225-B7CDEBBC3BD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D05DDD64-E2B4-48AB-A225-B7CDEBBC3BD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D05DDD64-E2B4-48AB-A225-B7CDEBBC3BD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32EFECD5-284B-452E-9510-B44CA52E7CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32EFECD5-284B-452E-9510-B44CA52E7CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32EFECD5-284B-452E-9510-B44CA52E7CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32EFECD5-284B-452E-9510-B44CA52E7CD5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
