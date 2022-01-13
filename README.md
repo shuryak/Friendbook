@@ -1,4 +1,4 @@
-# Friendbook Social Netrwork
+# Friendbook Social Network
 
 ## Migrations
 
