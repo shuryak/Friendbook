@@ -4,7 +4,7 @@ using Friendbook.Domain.Models;
 using Moq;
 using NUnit.Framework;
 
-namespace Shuryak.Friendbook.Tests;
+namespace Friendbook.Tests;
 
 public class UserProfileServiceTests
 {

@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Friendbook.Domain", "Friend
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Friendbook.DataAccess.PostgreSql", "Friendbook.DataAccess.PostgreSql\Friendbook.DataAccess.PostgreSql.csproj", "{F872265A-0DE4-4A48-B064-295263FB9CCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuryak.Friendbook.Tests", "Shuryak.Friendbook.Tests\Shuryak.Friendbook.Tests.csproj", "{D05DDD64-E2B4-48AB-A225-B7CDEBBC3BD6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Friendbook.Tests", "Friendbook.Tests\Friendbook.Tests.csproj", "{D05DDD64-E2B4-48AB-A225-B7CDEBBC3BD6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Friendbook.BusinessLogic", "Friendbook.BusinessLogic\Friendbook.BusinessLogic.csproj", "{32EFECD5-284B-452E-9510-B44CA52E7CD5}"
 EndProject
