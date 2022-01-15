@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 
-builder.Services.AddTransient<IRepository<UserProfile>, UserProfileRepository>();
+builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
 builder.Services.AddTransient<IValidator<UserProfile>, UserProfileValidator>();
 
 builder.Services.AddAutoMapper(typeof(DataAccessMappingProfile));

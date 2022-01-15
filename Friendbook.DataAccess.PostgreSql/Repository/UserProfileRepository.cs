@@ -5,10 +5,10 @@ using UserProfile = Friendbook.Domain.Models.UserProfile;
 
 namespace Friendbook.DataAccess.PostgreSql.Repository;
 
-public class UserProfileRepository : IRepository<UserProfile>
+public class UserProfileRepository : IUserProfileRepository
 {
-    private readonly IMapper _mapper;
     private readonly FriendbookDbContext _dbContext;
+    private readonly IMapper _mapper;
 
     public UserProfileRepository(FriendbookDbContext dbContext, IMapper mapper)
     {
@@ -29,6 +29,11 @@ public class UserProfileRepository : IRepository<UserProfile>
             .AsNoTracking().ToList();
 
         return userProfiles as IEnumerable<UserProfile>;
+    }
+
+    public IEnumerable<UserProfile> GetMany(int[] ids)
+    {
+        throw new NotImplementedException();
     }
 
     public UserProfile Get(int id)
