@@ -4,6 +4,8 @@ namespace Friendbook.DataAccess.PostgreSql.Entities;
 
 public class FollowerPair
 {
+    [Key]
+    public int Id { get; set; }
     [Required]
     public int FollowerId { get; set; }
     [Required]

@@ -7,12 +7,10 @@ namespace Friendbook.DataAccess.PostgreSql.Repositories;
 public class FollowerPairRepository : IFollowerPairRepository
 {
     private readonly FriendbookDbContext _dbContext;
-    private readonly IMapper _mapper;
 
-    public FollowerPairRepository(FriendbookDbContext dbContext, IMapper mapper)
+    public FollowerPairRepository(FriendbookDbContext dbContext)
     {
         _dbContext = dbContext;
-        _mapper = mapper;
     }
     
     public void Create(int followerId, int followingId)

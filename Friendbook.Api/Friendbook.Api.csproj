@@ -13,10 +13,12 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Friendbook.BusinessLogic\Friendbook.BusinessLogic.csproj" />
       <ProjectReference Include="..\Friendbook.DataAccess.PostgreSql\Friendbook.DataAccess.PostgreSql.csproj" />
     </ItemGroup>
 

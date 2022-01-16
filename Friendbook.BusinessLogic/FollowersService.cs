@@ -19,7 +19,7 @@ public class FollowersService : IFollowersService
         if (followerId < 1 || followingId < 1) return false;
 
         RelationshipStatuses status = _followerPairRepository.GetRelationshipStatus(followerId, followingId);
-        if (status is RelationshipStatuses.IsFollowed or RelationshipStatuses.IsFollowing) return false;
+        if (status is RelationshipStatuses.IsFollowed or RelationshipStatuses.IsFriends) return false;
         
         _followerPairRepository.Create(followerId, followingId);
         return true;
@@ -59,6 +59,9 @@ public class FollowersService : IFollowersService
     public bool Unfollow(int followerId, int followingId)
     {
         if (followerId < 1 || followingId < 1) return false;
+        
+        RelationshipStatuses status = _followerPairRepository.GetRelationshipStatus(followerId, followingId);
+        if (status is RelationshipStatuses.IsNotFollowed or RelationshipStatuses.IsFollowing) return false;
         
         _followerPairRepository.Delete(followerId, followingId);
         return true;

@@ -1,4 +1,6 @@
 using FluentValidation;
+using Friendbook.Api;
+using Friendbook.BusinessLogic;
 using Friendbook.DataAccess.PostgreSql;
 using Friendbook.DataAccess.PostgreSql.Repositories;
 using Friendbook.Domain;
@@ -11,9 +13,12 @@ ConfigurationManager configuration = builder.Configuration;
 builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
 builder.Services.AddTransient<IFollowerPairRepository, FollowerPairRepository>();
 
+builder.Services.AddTransient<IUserProfileService, UserProfileService>();
+builder.Services.AddTransient<IFollowersService, FollowersService>();
+    
 builder.Services.AddTransient<IValidator<UserProfile>, UserProfileValidator>();
 
-builder.Services.AddAutoMapper(typeof(DataAccessMappingProfile));
+builder.Services.AddAutoMapper(typeof(DataAccessMappingProfile), typeof(DtoMappingProfile));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -30,8 +35,9 @@ WebApplication app = builder.Build();
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
 }
 
 app.UseHttpsRedirection();

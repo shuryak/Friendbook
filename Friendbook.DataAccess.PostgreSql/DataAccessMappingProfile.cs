@@ -1,5 +1,5 @@
 using AutoMapper;
-using Friendbook.DataAccess.PostgreSql.Entities;
+using Friendbook.Domain.Models;
 
 namespace Friendbook.DataAccess.PostgreSql;
 
