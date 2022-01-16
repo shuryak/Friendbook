@@ -8,6 +8,6 @@ public class FollowerPair
     public int FollowerId { get; set; }
     [Required]
     public int FollowingId { get; set; }
-
+    [Required]
     public bool IsRetroactive { get; set; } = false;
 }

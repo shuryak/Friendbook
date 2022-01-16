@@ -3,7 +3,7 @@ using Friendbook.Domain;
 using Microsoft.EntityFrameworkCore;
 using UserProfile = Friendbook.Domain.Models.UserProfile;
 
-namespace Friendbook.DataAccess.PostgreSql.Repository;
+namespace Friendbook.DataAccess.PostgreSql.Repositories;
 
 public class UserProfileRepository : IUserProfileRepository
 {
@@ -25,10 +25,13 @@ public class UserProfileRepository : IUserProfileRepository
 
     public IEnumerable<UserProfile> GetList()
     {
-        List<Entities.UserProfile> userProfiles = _dbContext.UserProfiles
-            .AsNoTracking().ToList();
+        List<UserProfile> userProfiles = _dbContext.UserProfiles
+            .AsNoTracking()
+            .ToList()
+            .Select(userProfile => _mapper.Map<UserProfile>(userProfile))
+            .ToList();
 
-        return userProfiles as IEnumerable<UserProfile>;
+        return userProfiles;
     }
 
     public IEnumerable<UserProfile> GetMany(int[] ids)
@@ -43,6 +46,17 @@ public class UserProfileRepository : IUserProfileRepository
             .FirstOrDefault(x => x.Id == id);
 
         return _mapper.Map<UserProfile>(userProfile);
+    }
+
+    public IEnumerable<UserProfile> GetManyByIds(int[] ids)
+    {
+        List<UserProfile> userProfiles = _dbContext.UserProfiles
+            .Where(x => ids.Contains(x.Id))
+            .ToList()
+            .Select(userProfile => _mapper.Map<UserProfile>(userProfile))
+            .ToList();
+
+        return userProfiles;
     }
 
     public void Update(UserProfile userProfile)
