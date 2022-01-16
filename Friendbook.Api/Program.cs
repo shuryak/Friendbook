@@ -1,6 +1,6 @@
 using FluentValidation;
 using Friendbook.DataAccess.PostgreSql;
-using Friendbook.DataAccess.PostgreSql.Repository;
+using Friendbook.DataAccess.PostgreSql.Repositories;
 using Friendbook.Domain;
 using Friendbook.Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 
-builder.Services.AddTransient<IRepository<UserProfile>, UserProfileRepository>();
+builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
+builder.Services.AddTransient<IFollowerPairRepository, FollowerPairRepository>();
+
 builder.Services.AddTransient<IValidator<UserProfile>, UserProfileValidator>();
 
 builder.Services.AddAutoMapper(typeof(DataAccessMappingProfile));

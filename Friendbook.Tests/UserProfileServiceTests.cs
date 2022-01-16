@@ -8,13 +8,13 @@ namespace Friendbook.Tests;
 
 public class UserProfileServiceTests
 {
-    private UserProfileService _userProfileService;
-    private Mock<IRepository<UserProfile>> _userProfileRepository;
+    private IUserProfileService _userProfileService;
+    private Mock<IUserProfileRepository> _userProfileRepository;
 
     [SetUp]
     public void SetUp()
     {
-        _userProfileRepository = new Mock<IRepository<UserProfile>>();
+        _userProfileRepository = new Mock<IUserProfileRepository>();
         _userProfileService = new UserProfileService(_userProfileRepository.Object, new UserProfileValidator());
     }
     

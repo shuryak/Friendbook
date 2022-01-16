@@ -7,10 +7,10 @@ namespace Friendbook.BusinessLogic;
 
 public class UserProfileService : IUserProfileService
 {
-    private readonly IRepository<UserProfile> _userProfileRepository;
+    private readonly IUserProfileRepository _userProfileRepository;
     private readonly IValidator<UserProfile> _userProfileValidator;
 
-    public UserProfileService(IRepository<UserProfile> userProfileRepository, IValidator<UserProfile> userProfileValidator)
+    public UserProfileService(IUserProfileRepository userProfileRepository, IValidator<UserProfile> userProfileValidator)
     {
         _userProfileRepository = userProfileRepository;
         _userProfileValidator = userProfileValidator;
