@@ -1,27 +1,22 @@
-using System.ComponentModel.DataAnnotations;
+using Friendbook.DataAccess.PostgreSql.Entities;
 
 namespace Friendbook.Api.Models;
 
-public class CreateUserProfileDto
+public class AuthenticateUserResponseDto
 {
-    [Required]
+    public int Id { get; set; }
+    
     public string Nickname { get; set; } = string.Empty;
     
-    [Required]
     public string FirstName { get; set; } = string.Empty;
     
-    [Required]
     public string LastName { get; set; } = string.Empty;
-
-    [Required]
+    
     public int DayOfBirth { get; set; }
     
-    [Required]
     public int MonthOfBirth { get; set; }
-
-    [Required]
+    
     public int YearOfBirth { get; set; }
-
-    [Required]
-    public string Password { get; set; } = string.Empty;
+    
+    public string Token { get; set; } = string.Empty;
 }

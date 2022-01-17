@@ -1,5 +1,7 @@
 using FluentValidation;
 using Friendbook.Api;
+using Friendbook.Api.Configuration;
+using Friendbook.Api.Helpers;
 using Friendbook.BusinessLogic;
 using Friendbook.DataAccess.PostgreSql;
 using Friendbook.DataAccess.PostgreSql.Repositories;
@@ -23,6 +25,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddOptions<JwtConfiguration>()
+    .Bind(configuration.GetSection("JwtConfiguration"));
+
 builder.Services.AddDbContext<FriendbookDbContext>(x =>
     x.UseNpgsql(
         configuration.GetConnectionString("FriendbookContext")
@@ -44,6 +49,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseJwtMiddleware();
 app.MapControllers();
 
 app.Run();

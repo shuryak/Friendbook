@@ -25,9 +25,14 @@ public class UserProfileService : IUserProfileService
         return isValid;
     }
 
-    public UserProfile Get(int id)
+    public UserProfile GetById(int id)
     {
-        throw new NotImplementedException();
+        return _userProfileRepository.GetById(id);
+    }
+
+    public UserProfile GetByNickname(string nickname)
+    {
+        return _userProfileRepository.GetByNickname(nickname);
     }
 
     public IEnumerable<UserProfile> GetList(int start, int offset)

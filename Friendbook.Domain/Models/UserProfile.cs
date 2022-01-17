@@ -23,4 +23,6 @@ public class UserProfile
     public string LastName { get; set; }
     
     public DateOnly DateOfBirth { get; set; }
+    
+    public string PasswordHash { get; set; }
 }

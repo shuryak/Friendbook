@@ -1,5 +1,6 @@
 using AutoMapper;
 using Friendbook.Domain;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UserProfile = Friendbook.Domain.Models.UserProfile;
 
@@ -19,6 +20,7 @@ public class UserProfileRepository : IUserProfileRepository
     public void Create(UserProfile userProfile)
     {
         Entities.UserProfile userProfileEntity = _mapper.Map<Entities.UserProfile>(userProfile);
+
         _dbContext.UserProfiles.Add(userProfileEntity);
         _dbContext.SaveChanges();
     }
@@ -39,11 +41,20 @@ public class UserProfileRepository : IUserProfileRepository
         throw new NotImplementedException();
     }
 
-    public UserProfile Get(int id)
+    public UserProfile GetById(int id)
     {
         Entities.UserProfile? userProfile = _dbContext.UserProfiles
             .AsNoTracking()
             .FirstOrDefault(x => x.Id == id);
+
+        return _mapper.Map<UserProfile>(userProfile);
+    }
+
+    public UserProfile GetByNickname(string nickname)
+    {
+        Entities.UserProfile? userProfile = _dbContext.UserProfiles
+            .AsNoTracking()
+            .FirstOrDefault(x => x.Nickname == nickname);
 
         return _mapper.Map<UserProfile>(userProfile);
     }
