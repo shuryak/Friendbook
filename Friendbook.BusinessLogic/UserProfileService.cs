@@ -30,6 +30,11 @@ public class UserProfileService : IUserProfileService
         throw new NotImplementedException();
     }
 
+    public IEnumerable<UserProfile> GetList(int start, int offset)
+    {
+        return _userProfileRepository.GetList();
+    }
+
     private bool Validate(UserProfile userProfile)
     {
         ValidationResult result = _userProfileValidator.Validate(userProfile);

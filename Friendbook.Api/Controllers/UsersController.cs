@@ -38,4 +38,14 @@ public class UsersController : ControllerBase
     {
         return _followersService.Unfollow(dto.FollowerId, dto.FollowingId);
     }
+
+    [HttpGet]
+    public ActionResult<List<ShowUserProfileDto>> GetList()
+    {
+        IEnumerable<UserProfile> result = _userProfileService.GetList(0, 10);
+
+        List<ShowUserProfileDto> mappedResult = _mapper.Map<List<ShowUserProfileDto>>(result);
+        
+        return mappedResult;
+    }
 }

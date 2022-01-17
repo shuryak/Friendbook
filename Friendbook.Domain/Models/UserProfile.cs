@@ -9,6 +9,12 @@ public class UserProfile
         LastName = lastName;
         DateOfBirth = new DateOnly(yearOfBirth, monthOfBirth, dayOfBirth);
     }
+
+    public UserProfile()
+    {
+    }
+    
+    public int Id { get; set; }
     
     public string Nickname { get; set; }
     

@@ -6,4 +6,5 @@ public interface IUserProfileService
 {
     bool Create(UserProfile userProfile);
     UserProfile Get(int id);
+    IEnumerable<UserProfile> GetList(int start, int offset);
 }

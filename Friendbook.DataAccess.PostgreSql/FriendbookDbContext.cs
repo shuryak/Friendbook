@@ -15,10 +15,10 @@ public class FriendbookDbContext : DbContext
             .HasData(new UserProfile
             {
                 Id = 1,
-                Nickname = "shuryak",
+                Nickname = "sanya100",
                 FirstName = "Alexander",
-                LastName = "Konovalov",
-                DateOfBirth = new DateOnly(2004, 1, 24)
+                LastName = "Petrov",
+                DateOfBirth = new DateOnly(2001, 12, 28)
             }, new UserProfile
             {
                 Id = 2,
