@@ -56,4 +56,47 @@ public class UserProfileServiceTests
         // Assert
         Assert.IsFalse(result);
     }
+
+    [Test]
+    public void GetById_ShouldReturnUserProfile()
+    {
+        // Arrange
+        const int userProfileId = 1;
+
+        _userProfileRepository.Setup(x => x.GetById(userProfileId)).Verifiable();
+        
+        // Act
+        UserProfile result = _userProfileService.GetById(userProfileId);
+
+        // Assert
+        _userProfileRepository.Verify(x => x.GetById(userProfileId), Times.Once);
+    }
+
+    [Test]
+    public void GetByNickname_ShouldReturnUserProfile()
+    {
+        // Arrange
+        const string userProfileNickname = "shuryak";
+
+        _userProfileRepository.Setup(x => x.GetByNickname(userProfileNickname)).Verifiable();
+        
+        // Act
+        UserProfile result = _userProfileService.GetByNickname(userProfileNickname);
+
+        // Assert
+        _userProfileRepository.Verify(x => x.GetByNickname(userProfileNickname), Times.Once);
+    }
+
+    [Test]
+    public void GetList_ShouldReturnUserProfileList()
+    {
+        // Arrange
+        _userProfileRepository.Setup(x => x.GetList());
+
+        // Act
+        IEnumerable<UserProfile> userProfiles = _userProfileService.GetList(0, 10);
+
+        // Assert
+        _userProfileRepository.Verify(x => x.GetList(), Times.Once);
+    }
 }
