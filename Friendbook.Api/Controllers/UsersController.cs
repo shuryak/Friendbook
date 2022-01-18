@@ -3,6 +3,7 @@ using Friendbook.Api.Helpers;
 using Friendbook.Api.Models;
 using Friendbook.Domain;
 using Friendbook.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -68,6 +69,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
+    [Helpers.Authorize]
     public ActionResult<List<ShowUserProfileDto>> GetList()
     {
         IEnumerable<UserProfile> result = _userProfileService.GetList(0, 10);

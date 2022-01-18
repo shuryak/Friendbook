@@ -7,7 +7,9 @@ using Friendbook.DataAccess.PostgreSql;
 using Friendbook.DataAccess.PostgreSql.Repositories;
 using Friendbook.Domain;
 using Friendbook.Domain.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
