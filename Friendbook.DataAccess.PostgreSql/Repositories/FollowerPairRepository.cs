@@ -88,7 +88,7 @@ public class FollowerPairRepository : IFollowerPairRepository
     public int[] GetFriendsIds(int userId, int offset, int limit)
     {
         FollowerPair[] followerPairs = _dbContext.FollowerPairs
-            .Where(x => (x.FollowerId == userId || x.FollowerId == userId) && x.IsRetroactive)
+            .Where(x => (x.FollowerId == userId || x.FollowingId == userId) && x.IsRetroactive)
             .Skip(offset)
             .Take(limit)
             .ToArray();

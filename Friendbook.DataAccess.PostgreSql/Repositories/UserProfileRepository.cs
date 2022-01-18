@@ -1,6 +1,5 @@
 using AutoMapper;
 using Friendbook.Domain;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UserProfile = Friendbook.Domain.Models.UserProfile;
 
@@ -36,11 +35,6 @@ public class UserProfileRepository : IUserProfileRepository
         return userProfiles;
     }
 
-    public IEnumerable<UserProfile> GetMany(int[] ids)
-    {
-        throw new NotImplementedException();
-    }
-
     public UserProfile GetById(int id)
     {
         Entities.UserProfile? userProfile = _dbContext.UserProfiles
@@ -63,7 +57,6 @@ public class UserProfileRepository : IUserProfileRepository
     {
         List<UserProfile> userProfiles = _dbContext.UserProfiles
             .Where(x => ids.Contains(x.Id))
-            .ToList()
             .Select(userProfile => _mapper.Map<UserProfile>(userProfile))
             .ToList();
 
