@@ -25,11 +25,11 @@ public class UserProfileRepository : IUserProfileRepository
         _dbContext.SaveChanges();
     }
 
-    public IEnumerable<UserProfile> GetList()
+    public IEnumerable<UserProfile> GetList(int offset, int limit)
     {
         List<UserProfile> userProfiles = _dbContext.UserProfiles
-            .AsNoTracking()
-            .ToList()
+            .Skip(offset)
+            .Take(limit)
             .Select(userProfile => _mapper.Map<UserProfile>(userProfile))
             .ToList();
 

@@ -61,43 +61,48 @@ public class FollowerPairRepository : IFollowerPairRepository
             : RelationshipStatuses.IsFollowing;
     }
 
-    public int[] GetFollowersIds(int userId)
+    public int[] GetFollowersIds(int userId, int offset, int limit)
     {
         int[] followersIds = _dbContext.FollowerPairs
             .Where(x => x.FollowingId == userId && x.IsRetroactive == false)
+            .Skip(offset)
+            .Take(limit)
             .Select(x => x.FollowerId)
             .ToArray();
 
         return followersIds;
     }
 
-    public int[] GetFollowingsIds(int userId)
+    public int[] GetFollowingsIds(int userId, int offset, int limit)
     {
         int[] followingsIds = _dbContext.FollowerPairs
             .Where(x => x.FollowerId == userId && x.IsRetroactive == false)
+            .Skip(offset)
+            .Take(limit)
             .Select(x => x.FollowingId)
             .ToArray();
 
         return followingsIds;
     }
 
-    public int[] GetFriendsIds(int userId)
+    public int[] GetFriendsIds(int userId, int offset, int limit)
     {
-        int[] firstFriendsIds = _dbContext.FollowerPairs
-            .Where(x => (x.FollowerId == userId || x.FollowingId == userId) && x.IsRetroactive == true)
-            .Select(x => x.FollowerId)
-            .ToArray()
-            .Where(x => x != userId)
-            .ToArray();
-        
-        int[] secondFriendsIds = _dbContext.FollowerPairs
-            .Where(x => (x.FollowerId == userId || x.FollowingId == userId) && x.IsRetroactive == true)
-            .Select(x => x.FollowingId)
-            .ToArray()
-            .Where(x => x != userId)
+        FollowerPair[] followerPairs = _dbContext.FollowerPairs
+            .Where(x => (x.FollowerId == userId || x.FollowerId == userId) && x.IsRetroactive)
+            .Skip(offset)
+            .Take(limit)
             .ToArray();
 
-        return firstFriendsIds.Concat(secondFriendsIds).ToArray();
+        int[] friendsIds = new int[followerPairs.Length];
+
+        for (int i = 0; i < followerPairs.Length; i++)
+        {
+            friendsIds[i] = followerPairs[i].FollowerId == userId
+                ? followerPairs[i].FollowingId
+                : followerPairs[i].FollowerId;
+        }
+        
+        return friendsIds;
     }
 
     public void Delete(int followerId, int followingId)
