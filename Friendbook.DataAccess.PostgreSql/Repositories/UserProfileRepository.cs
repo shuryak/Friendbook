@@ -27,6 +27,7 @@ public class UserProfileRepository : IUserProfileRepository
     public IEnumerable<UserProfile> GetList(int offset, int limit)
     {
         List<UserProfile> userProfiles = _dbContext.UserProfiles
+            .OrderBy(x => x.Id)
             .Skip(offset)
             .Take(limit)
             .Select(userProfile => _mapper.Map<UserProfile>(userProfile))

@@ -64,6 +64,7 @@ public class FollowerPairRepository : IFollowerPairRepository
     public int[] GetFollowersIds(int userId, int offset, int limit)
     {
         int[] followersIds = _dbContext.FollowerPairs
+            .OrderBy(x => x.Id)
             .Where(x => x.FollowingId == userId && x.IsRetroactive == false)
             .Skip(offset)
             .Take(limit)
@@ -76,6 +77,7 @@ public class FollowerPairRepository : IFollowerPairRepository
     public int[] GetFollowingsIds(int userId, int offset, int limit)
     {
         int[] followingsIds = _dbContext.FollowerPairs
+            .OrderBy(x => x.Id)
             .Where(x => x.FollowerId == userId && x.IsRetroactive == false)
             .Skip(offset)
             .Take(limit)
@@ -88,6 +90,7 @@ public class FollowerPairRepository : IFollowerPairRepository
     public int[] GetFriendsIds(int userId, int offset, int limit)
     {
         FollowerPair[] followerPairs = _dbContext.FollowerPairs
+            .OrderBy(x => x.Id)
             .Where(x => (x.FollowerId == userId || x.FollowingId == userId) && x.IsRetroactive)
             .Skip(offset)
             .Take(limit)
