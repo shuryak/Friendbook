@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Friendbook.Api.Helpers;
+namespace Friendbook.Api.Helpers.Json;
 
 public static class JsonSerializationExtensions
 {

@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Friendbook.Api.Helpers;
+namespace Friendbook.Api.Helpers.Json;
 
 public class SnakeCaseNamingPolicy : JsonNamingPolicy
 {
