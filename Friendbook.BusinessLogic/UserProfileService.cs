@@ -35,9 +35,9 @@ public class UserProfileService : IUserProfileService
         return _userProfileRepository.GetByNickname(nickname);
     }
 
-    public IEnumerable<UserProfile> GetList(int start, int offset)
+    public IEnumerable<UserProfile> GetList(int offset = 0, int limit = 10)
     {
-        return _userProfileRepository.GetList();
+        return _userProfileRepository.GetList(offset, limit);
     }
 
     private bool Validate(UserProfile userProfile)

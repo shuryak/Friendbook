@@ -139,7 +139,7 @@ public class FollowersServiceTests
         const int userProfileId = 1;
 
         _followerPairRepositoryMock
-            .Setup(x => x.GetFollowersIds(userProfileId))
+            .Setup(x => x.GetFollowersIds(userProfileId, 0, 10))
             .Returns(() => new[] {2, 5, 3})
             .Verifiable();
         
@@ -162,7 +162,7 @@ public class FollowersServiceTests
         const int userProfileId = 1;
         
         _followerPairRepositoryMock
-            .Setup(x => x.GetFollowingsIds(userProfileId))
+            .Setup(x => x.GetFollowingsIds(userProfileId, 0, 10))
             .Returns(() => new[] {2, 5, 3})
             .Verifiable();
 
@@ -185,7 +185,7 @@ public class FollowersServiceTests
         const int userProfileId = 1;
         
         _followerPairRepositoryMock
-            .Setup(x => x.GetFriendsIds(userProfileId))
+            .Setup(x => x.GetFriendsIds(userProfileId, 0, 10))
             .Returns(() => new[] {2, 5, 3})
             .Verifiable();
 

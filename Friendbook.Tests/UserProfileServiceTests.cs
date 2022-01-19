@@ -91,12 +91,12 @@ public class UserProfileServiceTests
     public void GetList_ShouldReturnUserProfileList()
     {
         // Arrange
-        _userProfileRepository.Setup(x => x.GetList());
+        _userProfileRepository.Setup(x => x.GetList(0, 10));
 
         // Act
         IEnumerable<UserProfile> userProfiles = _userProfileService.GetList(0, 10);
 
         // Assert
-        _userProfileRepository.Verify(x => x.GetList(), Times.Once);
+        _userProfileRepository.Verify(x => x.GetList(0, 10), Times.Once);
     }
 }
