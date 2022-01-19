@@ -23,7 +23,11 @@ builder.Services.AddTransient<IFollowersService, FollowersService>();
 builder.Services.AddTransient<IValidator<UserProfile>, UserProfileValidator>();
 
 builder.Services.AddAutoMapper(typeof(DataAccessMappingProfile), typeof(DtoMappingProfile));
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(x =>
+    {
+        x.JsonSerializerOptions.PropertyNamingPolicy = new SnakeCaseNamingPolicy();
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
