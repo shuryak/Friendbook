@@ -2,14 +2,15 @@ using FluentValidation;
 using Friendbook.Api;
 using Friendbook.Api.Configuration;
 using Friendbook.Api.Helpers;
+using Friendbook.Api.Helpers.Errors;
+using Friendbook.Api.Helpers.Json;
 using Friendbook.BusinessLogic;
 using Friendbook.DataAccess.PostgreSql;
 using Friendbook.DataAccess.PostgreSql.Repositories;
 using Friendbook.Domain;
 using Friendbook.Domain.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
@@ -23,7 +24,17 @@ builder.Services.AddTransient<IFollowersService, FollowersService>();
 builder.Services.AddTransient<IValidator<UserProfile>, UserProfileValidator>();
 
 builder.Services.AddAutoMapper(typeof(DataAccessMappingProfile), typeof(DtoMappingProfile));
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(x =>
+    {
+        x.JsonSerializerOptions.PropertyNamingPolicy = new SnakeCaseNamingPolicy();
+    });
+builder.Services
+    .Configure<ApiBehaviorOptions>(x =>
+    {
+        x.InvalidModelStateResponseFactory = ctx => new ValidationProblemDetailsResult();
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
