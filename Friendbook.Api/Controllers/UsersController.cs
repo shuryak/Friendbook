@@ -3,7 +3,6 @@ using Friendbook.Api.Helpers;
 using Friendbook.Api.Models;
 using Friendbook.Domain;
 using Friendbook.Domain.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -68,14 +67,49 @@ public class UsersController : ControllerBase
         return _followersService.Unfollow(dto.FollowerId, dto.FollowingId);
     }
 
-    [HttpGet]
-    [Helpers.Authorize]
-    public ActionResult<List<ShowUserProfileDto>> GetList()
+    [HttpPost]
+    public ActionResult<List<ShowUserProfileDto>> GetList(LimitsDto dto)
     {
-        IEnumerable<UserProfile> result = _userProfileService.GetList(0, 10);
+        IEnumerable<UserProfile> result = _userProfileService.GetList(dto.Offset, dto.Limit);
 
         List<ShowUserProfileDto> mappedResult = _mapper.Map<List<ShowUserProfileDto>>(result);
         
+        return mappedResult;
+    }
+
+    [HttpPost]
+    public ActionResult<List<ShowUserProfileDto>> GetFollowers(GetRelationsDto dto)
+    {
+        UserProfile userProfile = _userProfileService.GetByNickname(dto.Nickname);
+
+        IEnumerable<UserProfile> result = _followersService.GetFollowers(userProfile.Id, dto.Offset, dto.Limit);
+
+        List<ShowUserProfileDto> mappedResult = _mapper.Map<List<ShowUserProfileDto>>(result);
+
+        return mappedResult;
+    }
+    
+    [HttpPost]
+    public ActionResult<List<ShowUserProfileDto>> GetFollowings(GetRelationsDto dto)
+    {
+        UserProfile userProfile = _userProfileService.GetByNickname(dto.Nickname);
+
+        IEnumerable<UserProfile> result = _followersService.GetFollowings(userProfile.Id, dto.Offset, dto.Limit);
+
+        List<ShowUserProfileDto> mappedResult = _mapper.Map<List<ShowUserProfileDto>>(result);
+
+        return mappedResult;
+    }
+    
+    [HttpPost]
+    public ActionResult<List<ShowUserProfileDto>> GetFriends(GetRelationsDto dto)
+    {
+        UserProfile userProfile = _userProfileService.GetByNickname(dto.Nickname);
+
+        IEnumerable<UserProfile> result = _followersService.GetFriends(userProfile.Id, dto.Offset, dto.Limit);
+
+        List<ShowUserProfileDto> mappedResult = _mapper.Map<List<ShowUserProfileDto>>(result);
+
         return mappedResult;
     }
 }
