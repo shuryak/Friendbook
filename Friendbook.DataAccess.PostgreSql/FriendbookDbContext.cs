@@ -45,8 +45,8 @@ public class FriendbookDbContext : DbContext
 
         // base.OnModelCreating(modelBuilder);
     }
-    
-    public DbSet<UserProfile> UserProfiles { get; set; }
-    
-    public DbSet<FollowerPair> FollowerPairs { get; set; }
+
+    public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
+
+    public DbSet<FollowerPair> FollowerPairs => Set<FollowerPair>();
 }
