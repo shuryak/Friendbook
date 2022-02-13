@@ -7,7 +7,7 @@ public sealed class FriendbookDbContext : DbContext
 {
     public FriendbookDbContext(DbContextOptions<FriendbookDbContext> options) : base(options)
     {
-        Database.EnsureCreated();
+        // Database.EnsureCreated();
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
