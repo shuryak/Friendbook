@@ -3,10 +3,11 @@ using Friendbook.DataAccess.PostgreSql.Entities;
 
 namespace Friendbook.DataAccess.PostgreSql;
 
-public class FriendbookDbContext : DbContext
+public sealed class FriendbookDbContext : DbContext
 {
     public FriendbookDbContext(DbContextOptions<FriendbookDbContext> options) : base(options)
     {
+        Database.EnsureCreated();
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
