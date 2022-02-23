@@ -28,4 +28,11 @@
       <ProjectReference Include="..\Friendbook.DataAccess.PostgreSql\Friendbook.DataAccess.PostgreSql.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Areas\Handler\Controllers" />
+      <Folder Include="Areas\Handler\Data" />
+      <Folder Include="Areas\Handler\Models" />
+      <Folder Include="Areas\Handler\Views" />
+    </ItemGroup>
+
 </Project>

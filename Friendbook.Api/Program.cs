@@ -17,9 +17,12 @@ ConfigurationManager configuration = builder.Configuration;
 
 builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
 builder.Services.AddTransient<IFollowerPairRepository, FollowerPairRepository>();
+builder.Services.AddTransient<IChatsRepository, ChatsRepository>();
+builder.Services.AddTransient<IMessagesRepository, MessagesRepository>();
 
 builder.Services.AddTransient<IUserProfileService, UserProfileService>();
 builder.Services.AddTransient<IFollowersService, FollowersService>();
+builder.Services.AddTransient<IMessagesService, MessagesService>();
     
 builder.Services.AddTransient<IValidator<UserProfile>, UserProfileValidator>();
 

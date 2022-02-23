@@ -9,13 +9,13 @@ namespace Friendbook.Tests;
 public class UserProfileServiceTests
 {
     private IUserProfileService _userProfileService;
-    private Mock<IUserProfileRepository> _userProfileRepository;
+    private Mock<IUserProfileRepository> _userProfileRepositoryMock;
 
     [SetUp]
     public void SetUp()
     {
-        _userProfileRepository = new Mock<IUserProfileRepository>();
-        _userProfileService = new UserProfileService(_userProfileRepository.Object, new UserProfileValidator());
+        _userProfileRepositoryMock = new Mock<IUserProfileRepository>();
+        _userProfileService = new UserProfileService(_userProfileRepositoryMock.Object, new UserProfileValidator());
     }
     
     [Test]
@@ -28,13 +28,13 @@ public class UserProfileServiceTests
         // Arrange
         UserProfile userProfile = new UserProfile(nickname, firstName, lastName, yearOfBirth, monthOfBirth, dayOfBirth);
         
-        _userProfileRepository.Setup(x => x.Create(userProfile)).Verifiable();
+        _userProfileRepositoryMock.Setup(x => x.Create(userProfile)).Verifiable();
 
         // Act
         bool result = _userProfileService.Create(userProfile);
 
         // Assert
-        _userProfileRepository.Verify(x => x.Create(userProfile), Times.Once());
+        _userProfileRepositoryMock.Verify(x => x.Create(userProfile), Times.Once());
         Assert.IsTrue(result);
     }
 
@@ -63,13 +63,13 @@ public class UserProfileServiceTests
         // Arrange
         const int userProfileId = 1;
 
-        _userProfileRepository.Setup(x => x.GetById(userProfileId)).Verifiable();
+        _userProfileRepositoryMock.Setup(x => x.GetById(userProfileId)).Verifiable();
         
         // Act
         UserProfile result = _userProfileService.GetById(userProfileId);
 
         // Assert
-        _userProfileRepository.Verify(x => x.GetById(userProfileId), Times.Once);
+        _userProfileRepositoryMock.Verify(x => x.GetById(userProfileId), Times.Once);
     }
 
     [Test]
@@ -78,25 +78,25 @@ public class UserProfileServiceTests
         // Arrange
         const string userProfileNickname = "shuryak";
 
-        _userProfileRepository.Setup(x => x.GetByNickname(userProfileNickname)).Verifiable();
+        _userProfileRepositoryMock.Setup(x => x.GetByNickname(userProfileNickname)).Verifiable();
         
         // Act
         UserProfile result = _userProfileService.GetByNickname(userProfileNickname);
 
         // Assert
-        _userProfileRepository.Verify(x => x.GetByNickname(userProfileNickname), Times.Once);
+        _userProfileRepositoryMock.Verify(x => x.GetByNickname(userProfileNickname), Times.Once);
     }
 
     [Test]
     public void GetList_ShouldReturnUserProfileList()
     {
         // Arrange
-        _userProfileRepository.Setup(x => x.GetList(0, 10));
+        _userProfileRepositoryMock.Setup(x => x.GetList(0, 10));
 
         // Act
         IEnumerable<UserProfile> userProfiles = _userProfileService.GetList(0, 10);
 
         // Assert
-        _userProfileRepository.Verify(x => x.GetList(0, 10), Times.Once);
+        _userProfileRepositoryMock.Verify(x => x.GetList(0, 10), Times.Once);
     }
 }

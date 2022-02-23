@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Friendbook.DataAccess.PostgreSql.Entities;
+using Friendbook.DataAccess.PostgreSql.Entities.Chats;
 
 namespace Friendbook.DataAccess.PostgreSql;
 
@@ -47,6 +48,9 @@ public class FriendbookDbContext : DbContext
     }
     
     public DbSet<UserProfile> UserProfiles { get; set; }
-    
     public DbSet<FollowerPair> FollowerPairs { get; set; }
+    
+    public DbSet<Chat> Chats { get; set; }
+    public DbSet<ChatMember> ChatMembers { get; set; }
+    public DbSet<Message> Messages { get; set; }
 }

@@ -9,5 +9,8 @@ public class DataAccessMappingProfile : Profile
     {
         CreateMap<UserProfile, Entities.UserProfile>()
             .ReverseMap();
+
+        CreateMap<Chat, Entities.Chats.Chat>()
+            .ReverseMap();
     }
 }
