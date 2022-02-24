@@ -2,6 +2,7 @@ using AutoMapper;
 using Friendbook.DataAccess.PostgreSql.Entities.Chats;
 using Friendbook.Domain;
 using Friendbook.Domain.Models;
+using Friendbook.Domain.RepositoryAbstractions;
 using Chat = Friendbook.Domain.Models.Chat;
 
 namespace Friendbook.DataAccess.PostgreSql.Repositories;

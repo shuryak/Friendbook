@@ -1,5 +1,6 @@
 using AutoMapper;
 using Friendbook.Domain;
+using Friendbook.Domain.RepositoryAbstractions;
 using Microsoft.EntityFrameworkCore;
 using UserProfile = Friendbook.Domain.Models.UserProfile;
 

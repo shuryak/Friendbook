@@ -2,6 +2,7 @@ using Friendbook.Api.Helpers;
 using Friendbook.Api.Models;
 using Friendbook.Domain;
 using Friendbook.Domain.Models;
+using Friendbook.Domain.ServiceAbstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Friendbook.Api.Controllers;

@@ -1,5 +1,7 @@
 using Friendbook.Domain;
 using Friendbook.Domain.Models;
+using Friendbook.Domain.RepositoryAbstractions;
+using Friendbook.Domain.ServiceAbstractions;
 
 namespace Friendbook.BusinessLogic;
 

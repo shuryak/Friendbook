@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Friendbook.Api.Configuration;
 using Friendbook.Domain;
+using Friendbook.Domain.ServiceAbstractions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
