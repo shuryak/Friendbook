@@ -16,10 +16,13 @@ public class MessagesService : IMessagesService
 
     public bool Send(Message message)
     {
-        _chatsRepository.Create(new Chat
+        int chatId = _chatsRepository.Create(new Chat
         {
-            ChatName = "Chat " + message.ChatId
+            ChatName = "Chat " + message.ChatId,
+            CreatedAt = DateTime.UtcNow
         });
+
+        message.ChatId = chatId;
         
         _messagesRepository.Create(message);
 

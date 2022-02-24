@@ -10,13 +10,21 @@ public class ChatsRepository : IChatsRepository
 {
     private readonly FriendbookDbContext _dbContext;
     private readonly IMapper _mapper;
-    
-    public void Create(Chat chat)
+
+    public ChatsRepository(FriendbookDbContext dbContext, IMapper mapper)
+    {
+        _dbContext = dbContext;
+        _mapper = mapper;
+    }
+
+    public int Create(Chat chat)
     {
         Entities.Chats.Chat chatEntity = _mapper.Map<Entities.Chats.Chat>(chat);
 
-        _dbContext.Add(chatEntity);
+        _dbContext.Chats.Add(chatEntity);
         _dbContext.SaveChanges();
+
+        return chatEntity.Id;
     }
 
     public Chat GetById(int id)

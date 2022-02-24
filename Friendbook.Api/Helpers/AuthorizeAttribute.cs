@@ -1,4 +1,4 @@
-using Friendbook.DataAccess.PostgreSql.Entities;
+using Friendbook.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

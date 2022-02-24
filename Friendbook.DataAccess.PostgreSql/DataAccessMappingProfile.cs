@@ -10,7 +10,9 @@ public class DataAccessMappingProfile : Profile
         CreateMap<UserProfile, Entities.UserProfile>()
             .ReverseMap();
 
-        CreateMap<Chat, Entities.Chats.Chat>()
+        CreateMap<Entities.Chats.Chat, Chat>()
+            .ForMember(x => x.CreatedAt,
+                s => s.MapFrom(x => x.CreatedAt == x.CreatedAt.ToUniversalTime()))
             .ReverseMap();
     }
 }

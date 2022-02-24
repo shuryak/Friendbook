@@ -4,6 +4,7 @@ using Friendbook.Api.Configuration;
 using Friendbook.Api.Helpers;
 using Friendbook.Api.Helpers.Errors;
 using Friendbook.Api.Helpers.Json;
+using Friendbook.Api.Hubs;
 using Friendbook.BusinessLogic;
 using Friendbook.DataAccess.PostgreSql;
 using Friendbook.DataAccess.PostgreSql.Repositories;
@@ -27,6 +28,13 @@ builder.Services.AddTransient<IMessagesService, MessagesService>();
 builder.Services.AddTransient<IValidator<UserProfile>, UserProfileValidator>();
 
 builder.Services.AddAutoMapper(typeof(DataAccessMappingProfile), typeof(DtoMappingProfile));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin",
+        corsPolicyBuilder => corsPolicyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
+
 builder.Services.AddControllers()
     .AddJsonOptions(x =>
     {
@@ -40,6 +48,8 @@ builder.Services
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSignalR();
 
 builder.Services.AddOptions<JwtConfiguration>()
     .Bind(configuration.GetSection("JwtConfiguration"));
@@ -62,10 +72,28 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseJwtMiddleware();
+
+app.UseRouting();
 
 app.UseAuthorization();
 
-app.UseJwtMiddleware();
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<MessagesHub>("/messages");
+});
 
-app.Run();
+if (app.Environment.IsDevelopment())
+{
+    await app.StartAsync();
+    
+    foreach (string url in app.Urls)
+        app.Logger.LogInformation($"Swagger on {url}/swagger");
+    
+    await app.WaitForShutdownAsync();
+}
+else
+{
+    app.Run();
+}
