@@ -1,7 +1,5 @@
 using Friendbook.DataAccess.PostgreSql.Entities.Chats;
-using Friendbook.Domain;
 using Friendbook.Domain.RepositoryAbstractions;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Message = Friendbook.Domain.Models.Message;
 
 namespace Friendbook.DataAccess.PostgreSql.Repositories;

@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Friendbook.Api.Models.Messages;
 
 public class CreateChatDto
@@ -7,5 +9,6 @@ public class CreateChatDto
         ChatName = chatName;
     }
     
+    [Required]
     public string ChatName { get; set; }
 }
