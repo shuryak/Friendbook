@@ -1,5 +1,6 @@
 using AutoMapper;
 using Friendbook.Api.Models;
+using Friendbook.Api.Models.Users;
 using Friendbook.Domain.Models;
 
 namespace Friendbook.Api;

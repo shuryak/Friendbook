@@ -4,7 +4,8 @@ namespace Friendbook.Domain.RepositoryAbstractions;
 
 public interface IChatsRepository
 {
-    int Create(Chat chat);
-    Chat GetById(int id);
-    void AddMember(int chatId, UserProfile userProfile);
+    Chat Create(Chat chat);
+    Chat? GetById(int id);
+    bool IsJoined(int chatId, int userProfileId);
+    void AddMember(int chatId, int userProfileId);
 }

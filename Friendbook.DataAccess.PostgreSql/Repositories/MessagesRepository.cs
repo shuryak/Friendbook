@@ -17,17 +17,14 @@ public class MessagesRepository : IMessagesRepository
 
     public void Create(Message message)
     {
-        EntityEntry<ChatMember> chatMember = _dbContext.ChatMembers.Add(new ChatMember
-        {
-            ChatId = message.ChatId,
-            MemberId = message.SenderId,
-            InvitedAt = DateTime.UtcNow
-        });
+        ChatMember? chatMember = _dbContext.ChatMembers.FirstOrDefault(x => x.ChatId == message.ChatId);
+
+        if (chatMember == null) return;
         
         _dbContext.Messages.Add(new Entities.Chats.Message
         {
             ChatId = message.ChatId,
-            SenderId = chatMember.Entity.Id,
+            ChatMember = chatMember,
             Text = message.Text,
             SentAt = DateTime.UtcNow
         });

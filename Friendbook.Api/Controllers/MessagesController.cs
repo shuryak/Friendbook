@@ -1,5 +1,6 @@
 using Friendbook.Api.Helpers;
 using Friendbook.Api.Models;
+using Friendbook.Api.Models.Messages;
 using Friendbook.Domain;
 using Friendbook.Domain.Models;
 using Friendbook.Domain.ServiceAbstractions;
@@ -19,6 +20,22 @@ public class MessagesController : ControllerBase
         _messagesService = messagesService;
         _userProfileService = userProfileService;
     }
+
+    [HttpPost]
+    [Authorize]
+    public ActionResult<Chat> CreateChat(CreateChatDto dto)
+    {
+        return _messagesService.CreateChat(new Chat(dto.ChatName));
+    }
+    
+    [HttpPost]
+    [Authorize]
+    public ActionResult<bool> AddChatMember(CreateChatMemberDto dto)
+    {
+        UserProfile? httpContextUser = (UserProfile)HttpContext.Items["User"]!;
+
+        return _messagesService.AddChatMember(dto.ChatId, httpContextUser.Id);
+    }
     
     [HttpPost]
     [Authorize]
@@ -26,11 +43,6 @@ public class MessagesController : ControllerBase
     {
         UserProfile? httpContextUser = (UserProfile)HttpContext.Items["User"]!;
 
-        return _messagesService.Send(new Message
-        {
-            SenderId = httpContextUser.Id,
-            Text = dto.Text,
-            ChatId = dto.ChatId
-        });
+        return _messagesService.Send(new Message(dto.ChatId, httpContextUser.Id, dto.Text));
     }
 }

@@ -26,13 +26,7 @@ public class MessagesServiceTests
     public void Send_ShouldReturnTrue()
     {
         // Arrange
-        Message message = new Message
-        {
-            SenderId = 1,
-            ChatId = 1,
-            Text = "Something",
-            SentAt = DateTime.Now
-        };
+        Message message = new Message(1, 1, "something");
 
         _messagesRepositoryMock.Setup(x => x.Create(message)).Verifiable();
 

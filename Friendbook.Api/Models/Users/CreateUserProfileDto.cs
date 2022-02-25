@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Friendbook.Api.Models;
+namespace Friendbook.Api.Models.Users;
 
 public class CreateUserProfileDto
 {

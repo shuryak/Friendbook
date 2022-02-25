@@ -16,18 +16,40 @@ public class MessagesService : IMessagesService
         _messagesRepository = messagesRepository;
     }
 
+    public Chat CreateChat(Chat chat)
+    {
+        return _chatsRepository.Create(chat);
+    }
+
+    public bool AddChatMember(int chatId, int memberId)
+    {
+        if (_chatsRepository.GetById(chatId) == null)
+        {
+            return false;
+        };
+        
+        if (_chatsRepository.IsJoined(chatId, memberId))
+        {
+            return false;
+        }
+        
+        _chatsRepository.AddMember(chatId, memberId);
+
+        return true;
+    }
+    
     public bool Send(Message message)
     {
-        int chatId = _chatsRepository.Create(new Chat
-        {
-            ChatName = "Chat " + message.ChatId,
-            CreatedAt = DateTime.UtcNow
-        });
-
-        message.ChatId = chatId;
+        Chat? chat = _chatsRepository.GetById(message.ChatId);
+        bool isJoined = _chatsRepository.IsJoined(message.ChatId, message.SenderId);
         
-        _messagesRepository.Create(message);
+        if (chat == null || !isJoined)
+        {
+            return false;
+        }
 
+        _messagesRepository.Create(message);
+        
         return true;
     }
 

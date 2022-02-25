@@ -1,6 +1,7 @@
 using AutoMapper;
 using Friendbook.Api.Helpers;
 using Friendbook.Api.Models;
+using Friendbook.Api.Models.Users;
 using Friendbook.Domain;
 using Friendbook.Domain.Models;
 using Friendbook.Domain.ServiceAbstractions;
