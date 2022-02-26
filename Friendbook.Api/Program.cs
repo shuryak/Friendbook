@@ -8,10 +8,10 @@ using Friendbook.Api.Hubs;
 using Friendbook.BusinessLogic;
 using Friendbook.DataAccess.PostgreSql;
 using Friendbook.DataAccess.PostgreSql.Repositories;
-using Friendbook.Domain;
 using Friendbook.Domain.Models;
 using Friendbook.Domain.RepositoryAbstractions;
 using Friendbook.Domain.ServiceAbstractions;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,11 +31,7 @@ builder.Services.AddTransient<IValidator<UserProfile>, UserProfileValidator>();
 
 builder.Services.AddAutoMapper(typeof(DataAccessMappingProfile), typeof(DtoMappingProfile));
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowOrigin",
-        corsPolicyBuilder => corsPolicyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-});
+builder.Services.AddCors();
 
 builder.Services.AddControllers()
     .AddJsonOptions(x =>
@@ -73,23 +69,28 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseJwtMiddleware();
 
 app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseCors(corsPolicyBuilder => corsPolicyBuilder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().WithOrigins("https://gourav-d.github.io"));
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
-    endpoints.MapHub<MessagesHub>("/messages");
+    endpoints.MapHub<MessagesHub>("/messages", options =>
+    {
+        options.Transports = HttpTransportType.WebSockets;
+    });
 });
 
 if (app.Environment.IsDevelopment())
 {
     await app.StartAsync();
-    
+
     foreach (string url in app.Urls)
         app.Logger.LogInformation($"Swagger on {url}/swagger");
     

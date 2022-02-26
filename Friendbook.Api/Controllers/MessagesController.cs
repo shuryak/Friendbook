@@ -1,10 +1,10 @@
 using Friendbook.Api.Helpers;
-using Friendbook.Api.Models;
+using Friendbook.Api.Hubs;
 using Friendbook.Api.Models.Messages;
-using Friendbook.Domain;
 using Friendbook.Domain.Models;
 using Friendbook.Domain.ServiceAbstractions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Friendbook.Api.Controllers;
 
@@ -14,11 +14,13 @@ public class MessagesController : ControllerBase
 {
     private readonly IMessagesService _messagesService;
     private readonly IUserProfileService _userProfileService;
-
-    public MessagesController(IMessagesService messagesService, IUserProfileService userProfileService)
+    private readonly IHubContext<MessagesHub> _hubContext;
+    
+    public MessagesController(IMessagesService messagesService, IUserProfileService userProfileService, IHubContext<MessagesHub> hubContext)
     {
         _messagesService = messagesService;
         _userProfileService = userProfileService;
+        _hubContext = hubContext;
     }
 
     [HttpPost]
@@ -39,9 +41,11 @@ public class MessagesController : ControllerBase
     
     [HttpPost]
     [Authorize]
-    public ActionResult<bool> Send(SendMessageDto dto)
+    public async Task<ActionResult<bool>> Send(SendMessageDto dto)
     {
         UserProfile? httpContextUser = (UserProfile)HttpContext.Items["User"]!;
+
+        await _hubContext.Clients.All.SendAsync("Send", "New message");
 
         return _messagesService.Send(new Message(dto.ChatId, httpContextUser.Id, dto.Text));
     }
