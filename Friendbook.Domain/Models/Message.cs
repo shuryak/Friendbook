@@ -8,6 +8,15 @@ public class Message
         SenderId = senderId;
         Text = text;
     }
+
+    public Message(int id, int chatId, int senderId, string text, DateTime sentAt)
+    {
+        Id = id;
+        ChatId = chatId;
+        SenderId = senderId;
+        Text = text;
+        SentAt = sentAt;
+    }
     
     public int Id { get; }
     

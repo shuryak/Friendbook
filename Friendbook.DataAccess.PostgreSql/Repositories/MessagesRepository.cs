@@ -13,21 +13,25 @@ public class MessagesRepository : IMessagesRepository
         _dbContext = dbContext;
     }
 
-    public void Create(Message message)
+    public Message? Create(Message message)
     {
         ChatMember? chatMember = _dbContext.ChatMembers.FirstOrDefault(x => x.ChatId == message.ChatId);
 
-        if (chatMember == null) return;
-        
-        _dbContext.Messages.Add(new Entities.Chats.Message
+        if (chatMember == null) return null;
+
+        Entities.Chats.Message messageEntity = new Entities.Chats.Message
         {
             ChatId = message.ChatId,
             ChatMember = chatMember,
             Text = message.Text,
             SentAt = DateTime.UtcNow
-        });
+        };
+        
+        _dbContext.Messages.Add(messageEntity);
 
         _dbContext.SaveChanges();
+
+        return new Message(messageEntity.Id, messageEntity.ChatId, messageEntity.ChatMember.MemberId, messageEntity.Text, messageEntity.SentAt);
     }
 
     public IEnumerable<Message> GetList(int offset, int limit)

@@ -1,5 +1,4 @@
 using Friendbook.BusinessLogic;
-using Friendbook.Domain;
 using Friendbook.Domain.Models;
 using Friendbook.Domain.RepositoryAbstractions;
 using Friendbook.Domain.ServiceAbstractions;
@@ -23,7 +22,7 @@ public class MessagesServiceTests
     }
 
     [Test]
-    public void Send_ShouldReturnTrue()
+    public void Send_ShouldReturnMessage()
     {
         // Arrange
         Message message = new Message(1, 1, "something");
@@ -31,11 +30,11 @@ public class MessagesServiceTests
         _messagesRepositoryMock.Setup(x => x.Create(message)).Verifiable();
 
         // Act
-        bool result = _messagesService.Send(message);
+        Message? result = _messagesService.Send(message);
 
         // Assert
         _messagesRepositoryMock.Verify(x => x.Create(message), Times.Once);
-        Assert.IsTrue(result);
+        Assert.IsNotNull(result);
     }
 
     [Test]

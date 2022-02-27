@@ -38,19 +38,17 @@ public class MessagesService : IMessagesService
         return true;
     }
     
-    public bool Send(Message message)
+    public Message? Send(Message message)
     {
         Chat? chat = _chatsRepository.GetById(message.ChatId);
         bool isJoined = _chatsRepository.IsJoined(message.ChatId, message.SenderId);
         
         if (chat == null || !isJoined)
         {
-            return false;
+            return null;
         }
 
-        _messagesRepository.Create(message);
-        
-        return true;
+        return _messagesRepository.Create(message);
     }
 
     public Message GetById(int id)

@@ -4,7 +4,7 @@ namespace Friendbook.Domain.ServiceAbstractions;
 
 public interface IMessagesService
 {
-    bool Send(Message message);
+    Message? Send(Message message);
     Chat CreateChat(Chat chat);
     bool AddChatMember(int chatId, int memberId);
     Message GetById(int id);

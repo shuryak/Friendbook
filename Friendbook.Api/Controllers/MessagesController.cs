@@ -45,8 +45,10 @@ public class MessagesController : ControllerBase
     {
         UserProfile? httpContextUser = (UserProfile)HttpContext.Items["User"]!;
 
-        await _hubContext.Clients.All.SendAsync("Send", "New message");
+        Message? sentMessage = _messagesService.Send(new Message(dto.ChatId, httpContextUser.Id, dto.Text));
+        
+        await _hubContext.Clients.All.SendAsync("Send", sentMessage);
 
-        return _messagesService.Send(new Message(dto.ChatId, httpContextUser.Id, dto.Text));
+        return sentMessage != null;
     }
 }
