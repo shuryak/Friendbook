@@ -1,7 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Friendbook.Api.Configuration;
 using Friendbook.Domain.Models;
 using Microsoft.IdentityModel.Tokens;
 
