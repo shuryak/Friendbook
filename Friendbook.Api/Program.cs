@@ -1,8 +1,6 @@
 using System.Text;
 using FluentValidation;
 using Friendbook.Api;
-using Friendbook.Api.Configuration;
-using Friendbook.Api.Helpers;
 using Friendbook.Api.Helpers.Errors;
 using Friendbook.Api.Helpers.Json;
 using Friendbook.BusinessLogic;
@@ -11,7 +9,6 @@ using Friendbook.DataAccess.PostgreSql.Repositories;
 using Friendbook.Domain;
 using Friendbook.Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -38,9 +35,6 @@ builder.Services
     {
         x.InvalidModelStateResponseFactory = ctx => new ValidationProblemDetailsResult();
     });
-
-// builder.Services.AddOptions<JwtConfiguration>()
-//     .Bind(configuration.GetSection("JwtConfiguration"));
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

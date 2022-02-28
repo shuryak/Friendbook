@@ -14,17 +14,13 @@ public class UsersController : ControllerBase
 {
     private readonly IUserProfileService _userProfileService;
     private readonly IFollowersService _followersService;
-    private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
-    private readonly PasswordHasher<UserProfile> _passwordHasher;
-        
-    public UsersController(IUserProfileService userProfileService, IFollowersService followersService, IConfiguration configuration, IMapper mapper)
+
+    public UsersController(IUserProfileService userProfileService, IFollowersService followersService, IMapper mapper)
     {
         _userProfileService = userProfileService;
         _followersService = followersService;
-        _configuration = configuration;
         _mapper = mapper;
-        _passwordHasher = new PasswordHasher<UserProfile>();
     }
 
     [HttpPost]
