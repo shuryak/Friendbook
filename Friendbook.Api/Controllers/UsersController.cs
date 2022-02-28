@@ -28,34 +28,6 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<AuthenticateUserResponseDto> Login(AuthenticateUserRequestDto dto)
-    {
-        UserProfile? userProfile = _userProfileService.GetByNickname(dto.Nickname);
-
-        if (_passwordHasher.VerifyHashedPassword(userProfile, userProfile.PasswordHash, dto.Password) 
-            != PasswordVerificationResult.Success)
-        {
-            return BadRequest("Incorrect nickname or password");
-        }
-
-        string token = _configuration.GenerateJwtToken(userProfile);
-
-        AuthenticateUserResponseDto responseDto = _mapper.Map<AuthenticateUserResponseDto>(userProfile);
-        responseDto.Token = token;
-
-        return responseDto;
-    }
-    
-    [HttpPost]
-    public ActionResult<bool> Register(CreateUserProfileDto dto)
-    {
-        UserProfile? userProfile = _mapper.Map<UserProfile>(dto);
-        userProfile.PasswordHash = _passwordHasher.HashPassword(userProfile, dto.Password);
-        
-        return _userProfileService.Create(userProfile);
-    }
-
-    [HttpPost]
     public ActionResult<bool> Follow(FollowDto dto)
     {
         return _followersService.Follow(dto.FollowerId, dto.FollowingId);
