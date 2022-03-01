@@ -70,8 +70,6 @@ public class UsersController : ControllerBase
     [HttpPost]
     public ActionResult<List<ShowUserProfileDto>> GetFriends(GetRelationsDto dto)
     {
-        var a = HttpContext.User;
-        
         UserProfile userProfile = _userProfileService.GetByNickname(dto.Nickname);
 
         IEnumerable<UserProfile> result = _followersService.GetFriends(userProfile.Id, dto.Offset, dto.Limit);

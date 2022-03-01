@@ -6,51 +6,50 @@ using Friendbook.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Friendbook.Api.Controllers
+namespace Friendbook.Api.Controllers;
+
+[ApiController]
+[Route("auth/[action]")]
+public class AuthController : ControllerBase
 {
-    [ApiController]
-    [Route("auth/[action]")]
-    public class AuthController : ControllerBase
+    private readonly IConfiguration _configuration;
+    private readonly IUserProfileService _userProfileService;
+    private readonly IMapper _mapper;
+    private readonly PasswordHasher<UserProfile> _passwordHasher;
+        
+    public AuthController(IConfiguration configuration, IUserProfileService userProfileService, IMapper mapper)
     {
-        private readonly IConfiguration _configuration;
-        private readonly IUserProfileService _userProfileService;
-        private readonly IMapper _mapper;
-        private readonly PasswordHasher<UserProfile> _passwordHasher;
+        _configuration = configuration;
+        _userProfileService = userProfileService;
+        _mapper = mapper;
+        _passwordHasher = new PasswordHasher<UserProfile>();
+    }
         
-        public AuthController(IConfiguration configuration, IUserProfileService userProfileService, IMapper mapper)
+    [HttpPost]
+    public ActionResult<AuthenticateUserResponseDto> Login(AuthenticateUserRequestDto dto)
+    {
+        UserProfile? userProfile = _userProfileService.GetByNickname(dto.Nickname);
+
+        if (_passwordHasher.VerifyHashedPassword(userProfile, userProfile.PasswordHash, dto.Password) 
+            != PasswordVerificationResult.Success)
         {
-            _configuration = configuration;
-            _userProfileService = userProfileService;
-            _mapper = mapper;
-            _passwordHasher = new PasswordHasher<UserProfile>();
+            return BadRequest("Incorrect nickname or password");
         }
-        
-        [HttpPost]
-        public ActionResult<AuthenticateUserResponseDto> Login(AuthenticateUserRequestDto dto)
-        {
-            UserProfile? userProfile = _userProfileService.GetByNickname(dto.Nickname);
 
-            if (_passwordHasher.VerifyHashedPassword(userProfile, userProfile.PasswordHash, dto.Password) 
-                != PasswordVerificationResult.Success)
-            {
-                return BadRequest("Incorrect nickname or password");
-            }
+        string token = _configuration.GenerateJwtToken(userProfile);
 
-            string token = _configuration.GenerateJwtToken(userProfile);
+        AuthenticateUserResponseDto responseDto = _mapper.Map<AuthenticateUserResponseDto>(userProfile);
+        responseDto.Token = token;
 
-            AuthenticateUserResponseDto responseDto = _mapper.Map<AuthenticateUserResponseDto>(userProfile);
-            responseDto.Token = token;
-
-            return responseDto;
-        }
+        return responseDto;
+    }
     
-        [HttpPost]
-        public ActionResult<bool> Register(CreateUserProfileDto dto)
-        {
-            UserProfile? userProfile = _mapper.Map<UserProfile>(dto);
-            userProfile.PasswordHash = _passwordHasher.HashPassword(userProfile, dto.Password);
+    [HttpPost]
+    public ActionResult<bool> Register(CreateUserProfileDto dto)
+    {
+        UserProfile? userProfile = _mapper.Map<UserProfile>(dto);
+        userProfile.PasswordHash = _passwordHasher.HashPassword(userProfile, dto.Password);
         
-            return _userProfileService.Create(userProfile);
-        }
+        return _userProfileService.Create(userProfile);
     }
 }
