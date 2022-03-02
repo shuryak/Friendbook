@@ -32,27 +32,27 @@ public class FollowersService : IFollowersService
         return _followerPairRepository.GetRelationshipStatus(followerId, followingId);
     }
 
-    public IEnumerable<UserProfile> GetFollowers(int userProfileId, int offset = 0, int limit = 10)
+    public IEnumerable<User> GetFollowers(int userProfileId, int offset = 0, int limit = 10)
     {
         int[] followers = _followerPairRepository.GetFollowersIds(userProfileId, offset, limit);
 
-        IEnumerable<UserProfile> followersList = _userRepository.GetManyByIds(followers);
+        IEnumerable<User> followersList = _userRepository.GetManyByIds(followers);
         return followersList;
     }
 
-    public IEnumerable<UserProfile> GetFollowings(int userProfileId, int offset = 0, int limit = 10)
+    public IEnumerable<User> GetFollowings(int userProfileId, int offset = 0, int limit = 10)
     {
         int[] followers = _followerPairRepository.GetFollowingsIds(userProfileId, offset, limit);
 
-        IEnumerable<UserProfile> followingsList = _userRepository.GetManyByIds(followers);
+        IEnumerable<User> followingsList = _userRepository.GetManyByIds(followers);
         return followingsList;
     }
 
-    public IEnumerable<UserProfile> GetFriends(int userProfileId, int offset = 0, int limit = 10)
+    public IEnumerable<User> GetFriends(int userProfileId, int offset = 0, int limit = 10)
     {
         int[] followers = _followerPairRepository.GetFriendsIds(userProfileId, offset, limit);
 
-        IEnumerable<UserProfile> friendsList = _userRepository.GetManyByIds(followers);
+        IEnumerable<User> friendsList = _userRepository.GetManyByIds(followers);
         return friendsList;
     }
 

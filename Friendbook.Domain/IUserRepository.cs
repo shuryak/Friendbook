@@ -4,11 +4,11 @@ namespace Friendbook.Domain;
 
 public interface IUserRepository
 {
-    void Create(UserProfile userProfile);
-    IEnumerable<UserProfile> GetList(int offset, int limit);
-    UserProfile GetById(int id);
-    UserProfile GetByNickname(string nickname);
-    IEnumerable<UserProfile> GetManyByIds(int[] ids);
-    void Update(UserProfile entity);
+    void Create(User user);
+    IEnumerable<User> GetList(int offset, int limit);
+    User? GetById(int id);
+    User? GetByNickname(string nickname);
+    IEnumerable<User> GetManyByIds(int[] ids);
+    void Update(User entity);
     void Delete(int id);
 }

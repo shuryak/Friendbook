@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Friendbook.Api.Models;
 
-public class CreateUserProfileDto
+public class CreateUserDto
 {
     [Required]
     public string Nickname { get; set; } = string.Empty;

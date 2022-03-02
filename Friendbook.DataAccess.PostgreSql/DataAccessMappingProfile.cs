@@ -7,7 +7,12 @@ public class DataAccessMappingProfile : Profile
 {
     public DataAccessMappingProfile()
     {
-        CreateMap<UserProfile, Entities.User>()
+        CreateMap<User, Entities.User>()
+            .ReverseMap();
+
+        CreateMap<UserSession, Entities.UserSession>()
+            .ForMember(x => x.Id,
+                s => s.MapFrom(x => x.SessionId))
             .ReverseMap();
     }
 }

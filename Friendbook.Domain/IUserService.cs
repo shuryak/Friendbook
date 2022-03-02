@@ -4,8 +4,8 @@ namespace Friendbook.Domain;
 
 public interface IUserService
 {
-    bool Create(UserProfile userProfile);
-    UserProfile GetById(int id);
-    UserProfile GetByNickname(string nickname);
-    IEnumerable<UserProfile> GetList(int start, int offset);
+    bool Create(User user);
+    User? GetById(int id);
+    User? GetByNickname(string nickname);
+    IEnumerable<User> GetList(int start, int offset);
 }

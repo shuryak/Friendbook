@@ -8,41 +8,41 @@ namespace Friendbook.BusinessLogic;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
-    private readonly IValidator<UserProfile> _userProfileValidator;
+    private readonly IValidator<User> _userProfileValidator;
 
-    public UserService(IUserRepository userRepository, IValidator<UserProfile> userProfileValidator)
+    public UserService(IUserRepository userRepository, IValidator<User> userProfileValidator)
     {
         _userRepository = userRepository;
         _userProfileValidator = userProfileValidator;
     }
 
-    public bool Create(UserProfile userProfile)
+    public bool Create(User user)
     {
-        bool isValid = Validate(userProfile);
+        bool isValid = Validate(user);
         
-        if (isValid) _userRepository.Create(userProfile);
+        if (isValid) _userRepository.Create(user);
 
         return isValid;
     }
 
-    public UserProfile GetById(int id)
+    public User? GetById(int id)
     {
         return _userRepository.GetById(id);
     }
 
-    public UserProfile GetByNickname(string nickname)
+    public User? GetByNickname(string nickname)
     {
         return _userRepository.GetByNickname(nickname);
     }
 
-    public IEnumerable<UserProfile> GetList(int offset = 0, int limit = 10)
+    public IEnumerable<User> GetList(int offset = 0, int limit = 10)
     {
         return _userRepository.GetList(offset, limit);
     }
 
-    private bool Validate(UserProfile userProfile)
+    private bool Validate(User user)
     {
-        ValidationResult result = _userProfileValidator.Validate(userProfile);
+        ValidationResult result = _userProfileValidator.Validate(user);
 
         return result.IsValid;
     }

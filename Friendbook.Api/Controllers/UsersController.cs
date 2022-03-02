@@ -34,47 +34,47 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<List<ShowUserProfileDto>> GetList(LimitsDto dto)
+    public ActionResult<List<ShowUserDto>> GetList(LimitsDto dto)
     {
-        IEnumerable<UserProfile> result = _userService.GetList(dto.Offset, dto.Limit);
+        IEnumerable<User> result = _userService.GetList(dto.Offset, dto.Limit);
 
-        List<ShowUserProfileDto> mappedResult = _mapper.Map<List<ShowUserProfileDto>>(result);
+        List<ShowUserDto> mappedResult = _mapper.Map<List<ShowUserDto>>(result);
         
         return mappedResult;
     }
 
     [HttpPost]
-    public ActionResult<List<ShowUserProfileDto>> GetFollowers(GetRelationsDto dto)
+    public ActionResult<List<ShowUserDto>> GetFollowers(GetRelationsDto dto)
     {
-        UserProfile userProfile = _userService.GetByNickname(dto.Nickname);
+        User user = _userService.GetByNickname(dto.Nickname);
 
-        IEnumerable<UserProfile> result = _followersService.GetFollowers(userProfile.Id, dto.Offset, dto.Limit);
+        IEnumerable<User> result = _followersService.GetFollowers(user.Id, dto.Offset, dto.Limit);
 
-        List<ShowUserProfileDto> mappedResult = _mapper.Map<List<ShowUserProfileDto>>(result);
+        List<ShowUserDto> mappedResult = _mapper.Map<List<ShowUserDto>>(result);
 
         return mappedResult;
     }
     
     [HttpPost]
-    public ActionResult<List<ShowUserProfileDto>> GetFollowings(GetRelationsDto dto)
+    public ActionResult<List<ShowUserDto>> GetFollowings(GetRelationsDto dto)
     {
-        UserProfile userProfile = _userService.GetByNickname(dto.Nickname);
+        User user = _userService.GetByNickname(dto.Nickname);
 
-        IEnumerable<UserProfile> result = _followersService.GetFollowings(userProfile.Id, dto.Offset, dto.Limit);
+        IEnumerable<User> result = _followersService.GetFollowings(user.Id, dto.Offset, dto.Limit);
 
-        List<ShowUserProfileDto> mappedResult = _mapper.Map<List<ShowUserProfileDto>>(result);
+        List<ShowUserDto> mappedResult = _mapper.Map<List<ShowUserDto>>(result);
 
         return mappedResult;
     }
     
     [HttpPost]
-    public ActionResult<List<ShowUserProfileDto>> GetFriends(GetRelationsDto dto)
+    public ActionResult<List<ShowUserDto>> GetFriends(GetRelationsDto dto)
     {
-        UserProfile userProfile = _userService.GetByNickname(dto.Nickname);
+        User user = _userService.GetByNickname(dto.Nickname);
 
-        IEnumerable<UserProfile> result = _followersService.GetFriends(userProfile.Id, dto.Offset, dto.Limit);
+        IEnumerable<User> result = _followersService.GetFriends(user.Id, dto.Offset, dto.Limit);
 
-        List<ShowUserProfileDto> mappedResult = _mapper.Map<List<ShowUserProfileDto>>(result);
+        List<ShowUserDto> mappedResult = _mapper.Map<List<ShowUserDto>>(result);
 
         return mappedResult;
     }

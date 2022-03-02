@@ -148,7 +148,7 @@ public class FollowersServiceTests
             .Verifiable();
 
         // Act
-        IEnumerable<UserProfile> result = _followersService.GetFollowers(userProfileId);
+        IEnumerable<User> result = _followersService.GetFollowers(userProfileId);
 
         // Assert
         _followerPairRepositoryMock.VerifyAll();
@@ -171,7 +171,7 @@ public class FollowersServiceTests
             .Verifiable();
         
         // Act
-        IEnumerable<UserProfile> result = _followersService.GetFollowings(userProfileId);
+        IEnumerable<User> result = _followersService.GetFollowings(userProfileId);
 
         // Assert
         _followerPairRepositoryMock.VerifyAll();
@@ -194,7 +194,7 @@ public class FollowersServiceTests
             .Verifiable();
         
         // Act
-        IEnumerable<UserProfile> result = _followersService.GetFriends(userProfileId);
+        IEnumerable<User> result = _followersService.GetFriends(userProfileId);
 
         // Assert
         _followerPairRepositoryMock.VerifyAll();

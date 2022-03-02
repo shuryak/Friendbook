@@ -1,7 +1,7 @@
 using AutoMapper;
 using Friendbook.Domain;
+using Friendbook.Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using UserProfile = Friendbook.Domain.Models.UserProfile;
 
 namespace Friendbook.DataAccess.PostgreSql.Repositories;
 
@@ -16,55 +16,55 @@ public class UserRepository : IUserRepository
         _mapper = mapper;
     }
     
-    public void Create(UserProfile userProfile)
+    public void Create(User user)
     {
-        Entities.User userEntity = _mapper.Map<Entities.User>(userProfile);
+        Entities.User userEntity = _mapper.Map<Entities.User>(user);
 
         _dbContext.Users.Add(userEntity);
         _dbContext.SaveChanges();
     }
 
-    public IEnumerable<UserProfile> GetList(int offset, int limit)
+    public IEnumerable<User> GetList(int offset, int limit)
     {
-        List<UserProfile> userProfiles = _dbContext.Users
+        List<User> userProfiles = _dbContext.Users
             .OrderBy(x => x.Id)
             .Skip(offset)
             .Take(limit)
-            .Select(userProfile => _mapper.Map<UserProfile>(userProfile))
+            .Select(userProfile => _mapper.Map<User>(userProfile))
             .ToList();
 
         return userProfiles;
     }
 
-    public UserProfile GetById(int id)
+    public User? GetById(int id)
     {
         Entities.User? userProfile = _dbContext.Users
             .AsNoTracking()
             .FirstOrDefault(x => x.Id == id);
 
-        return _mapper.Map<UserProfile>(userProfile);
+        return _mapper.Map<User>(userProfile);
     }
 
-    public UserProfile GetByNickname(string nickname)
+    public User? GetByNickname(string nickname)
     {
         Entities.User? userProfile = _dbContext.Users
             .AsNoTracking()
             .FirstOrDefault(x => x.Nickname == nickname);
 
-        return _mapper.Map<UserProfile>(userProfile);
+        return _mapper.Map<User>(userProfile);
     }
 
-    public IEnumerable<UserProfile> GetManyByIds(int[] ids)
+    public IEnumerable<User> GetManyByIds(int[] ids)
     {
-        List<UserProfile> userProfiles = _dbContext.Users
+        List<User> userProfiles = _dbContext.Users
             .Where(x => ids.Contains(x.Id))
-            .Select(userProfile => _mapper.Map<UserProfile>(userProfile))
+            .Select(userProfile => _mapper.Map<User>(userProfile))
             .ToList();
 
         return userProfiles;
     }
 
-    public void Update(UserProfile userProfile)
+    public void Update(User user)
     {
         throw new NotImplementedException();
     }

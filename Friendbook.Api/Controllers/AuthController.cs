@@ -14,40 +14,49 @@ public class AuthController : ControllerBase
 {
     private readonly IConfiguration _configuration;
     private readonly IUserService _userService;
+    private readonly IUserSessionService _userSessionService;
     private readonly IMapper _mapper;
-    private readonly PasswordHasher<UserProfile> _passwordHasher;
+    private readonly PasswordHasher<User> _passwordHasher;
         
-    public AuthController(IConfiguration configuration, IUserService userService, IMapper mapper)
+    public AuthController(IConfiguration configuration, IUserService userService, IUserSessionService userSessionService, IMapper mapper)
     {
         _configuration = configuration;
         _userService = userService;
+        _userSessionService = userSessionService;
         _mapper = mapper;
-        _passwordHasher = new PasswordHasher<UserProfile>();
+        _passwordHasher = new PasswordHasher<User>();
     }
         
     [HttpPost]
     public ActionResult<AuthenticateUserResponseDto> Login(AuthenticateUserRequestDto dto)
     {
-        UserProfile? userProfile = _userService.GetByNickname(dto.Nickname);
+        User? user = _userService.GetByNickname(dto.Nickname);
 
-        if (_passwordHasher.VerifyHashedPassword(userProfile, userProfile.PasswordHash, dto.Password) 
+        if (user == null || _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password) 
             != PasswordVerificationResult.Success)
         {
             return BadRequest("Incorrect nickname or password");
         }
 
-        string token = _configuration.GenerateJwtToken(userProfile);
+        UserSession userSession = _userSessionService.Create(user, TimeSpan.FromDays(7));
+        
+        string accessToken = _configuration.GenerateJwtToken(user);
 
-        AuthenticateUserResponseDto responseDto = _mapper.Map<AuthenticateUserResponseDto>(userProfile);
-        responseDto.Token = token;
+        AuthenticateUserResponseDto responseDto = new AuthenticateUserResponseDto
+        {
+            SessionId = userSession.SessionId,
+            AccessToken = accessToken,
+            RefreshToken = userSession.RefreshToken,
+            ExpiresAt = userSession.ExpiresAt
+        };
 
         return responseDto;
     }
     
     [HttpPost]
-    public ActionResult<bool> Register(CreateUserProfileDto dto)
+    public ActionResult<bool> Register(CreateUserDto dto)
     {
-        UserProfile? userProfile = _mapper.Map<UserProfile>(dto);
+        User? userProfile = _mapper.Map<User>(dto);
         userProfile.PasswordHash = _passwordHasher.HashPassword(userProfile, dto.Password);
         
         return _userService.Create(userProfile);

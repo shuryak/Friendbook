@@ -15,7 +15,7 @@ public class UserProfileServiceTests
     public void SetUp()
     {
         _userProfileRepository = new Mock<IUserRepository>();
-        _userService = new UserService(_userProfileRepository.Object, new UserProfileValidator());
+        _userService = new UserService(_userProfileRepository.Object, new UserValidator());
     }
     
     [Test]
@@ -26,15 +26,15 @@ public class UserProfileServiceTests
         int monthOfBirth, int dayOfBirth)
     {
         // Arrange
-        UserProfile userProfile = new UserProfile(nickname, firstName, lastName, yearOfBirth, monthOfBirth, dayOfBirth);
+        User user = new User(nickname, firstName, lastName, yearOfBirth, monthOfBirth, dayOfBirth);
         
-        _userProfileRepository.Setup(x => x.Create(userProfile)).Verifiable();
+        _userProfileRepository.Setup(x => x.Create(user)).Verifiable();
 
         // Act
-        bool result = _userService.Create(userProfile);
+        bool result = _userService.Create(user);
 
         // Assert
-        _userProfileRepository.Verify(x => x.Create(userProfile), Times.Once());
+        _userProfileRepository.Verify(x => x.Create(user), Times.Once());
         Assert.IsTrue(result);
     }
 
@@ -48,10 +48,10 @@ public class UserProfileServiceTests
         int monthOfBirth, int dayOfBirth)
     {
         // Arrange
-        UserProfile userProfile = new UserProfile(nickname, firstName, lastName, yearOfBirth, monthOfBirth, dayOfBirth);
+        User user = new User(nickname, firstName, lastName, yearOfBirth, monthOfBirth, dayOfBirth);
 
         // Act
-        bool result = _userService.Create(userProfile);
+        bool result = _userService.Create(user);
 
         // Assert
         Assert.IsFalse(result);
@@ -66,7 +66,7 @@ public class UserProfileServiceTests
         _userProfileRepository.Setup(x => x.GetById(userProfileId)).Verifiable();
         
         // Act
-        UserProfile result = _userService.GetById(userProfileId);
+        User result = _userService.GetById(userProfileId);
 
         // Assert
         _userProfileRepository.Verify(x => x.GetById(userProfileId), Times.Once);
@@ -81,7 +81,7 @@ public class UserProfileServiceTests
         _userProfileRepository.Setup(x => x.GetByNickname(userProfileNickname)).Verifiable();
         
         // Act
-        UserProfile result = _userService.GetByNickname(userProfileNickname);
+        User result = _userService.GetByNickname(userProfileNickname);
 
         // Assert
         _userProfileRepository.Verify(x => x.GetByNickname(userProfileNickname), Times.Once);
@@ -94,7 +94,7 @@ public class UserProfileServiceTests
         _userProfileRepository.Setup(x => x.GetList(0, 10));
 
         // Act
-        IEnumerable<UserProfile> userProfiles = _userService.GetList(0, 10);
+        IEnumerable<User> userProfiles = _userService.GetList(0, 10);
 
         // Assert
         _userProfileRepository.Verify(x => x.GetList(0, 10), Times.Once);
