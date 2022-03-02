@@ -28,6 +28,15 @@ public class AuthController : ControllerBase
     }
         
     [HttpPost]
+    public ActionResult<bool> Register(CreateUserDto dto)
+    {
+        User? userProfile = _mapper.Map<User>(dto);
+        userProfile.PasswordHash = _passwordHasher.HashPassword(userProfile, dto.Password);
+        
+        return _userService.Create(userProfile);
+    }
+    
+    [HttpPost]
     public ActionResult<AuthenticateUserResponseDto> Login(AuthenticateUserRequestDto dto)
     {
         User? user = _userService.GetByNickname(dto.Nickname);
@@ -42,23 +51,38 @@ public class AuthController : ControllerBase
         
         string accessToken = _configuration.GenerateJwtToken(user);
 
-        AuthenticateUserResponseDto responseDto = new AuthenticateUserResponseDto
+        return new AuthenticateUserResponseDto
         {
-            SessionId = userSession.SessionId,
             AccessToken = accessToken,
             RefreshToken = userSession.RefreshToken,
-            ExpiresAt = userSession.ExpiresAt
+            RefreshTokenExpiresAt = userSession.ExpiresAt
         };
-
-        return responseDto;
     }
-    
+
     [HttpPost]
-    public ActionResult<bool> Register(CreateUserDto dto)
+    public ActionResult<AuthenticateUserResponseDto> RefreshTokenPair(RefreshTokenPairRequestDto dto)
     {
-        User? userProfile = _mapper.Map<User>(dto);
-        userProfile.PasswordHash = _passwordHasher.HashPassword(userProfile, dto.Password);
+        UserSession? userSession = _userSessionService.Renew(dto.RefreshToken, TimeSpan.FromDays(7));
+
+        if (userSession == null)
+        {
+            return BadRequest("Refresh token expired or invalid");
+        }
         
-        return _userService.Create(userProfile);
+        User? user = _userService.GetById(userSession.UserId);
+
+        if (user == null)
+        {
+            return BadRequest("User does not exists");
+        }
+        
+        string accessToken = _configuration.GenerateJwtToken(user);
+        
+        return new AuthenticateUserResponseDto
+        {
+            AccessToken = accessToken,
+            RefreshToken = userSession.RefreshToken,
+            RefreshTokenExpiresAt = userSession.ExpiresAt
+        };
     }
 }

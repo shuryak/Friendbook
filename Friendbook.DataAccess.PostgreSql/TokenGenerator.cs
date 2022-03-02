@@ -6,7 +6,7 @@ public static class TokenGenerator
 {
     public static string GenerateRefreshToken()
     {
-        byte[] randomNumber = new byte[32];
+        byte[] randomNumber = new byte[64];
 
         using RandomNumberGenerator generator = RandomNumberGenerator.Create();
         generator.GetBytes(randomNumber);

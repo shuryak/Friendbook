@@ -39,16 +39,22 @@ public class UserSessionRepository : IUserSessionRepository
         return _mapper.Map<UserSession>(userSessionEntity);
     }
 
-    public UserSession Update(UserSession userSession, TimeSpan expiresIn)
+    public UserSession? Update(string refreshToken, TimeSpan expiresIn)
     {
-        Entities.UserSession? userSessionEntity = _mapper.Map<Entities.UserSession>(userSession);
+        Entities.UserSession? userSessionEntity = _dbContext.UserSessions
+            .FirstOrDefault(x => x.RefreshToken == refreshToken);
+
+        if (userSessionEntity == null || userSessionEntity.ExpiresAt < DateTime.UtcNow)
+        {
+            return null;
+        }
         
-        userSessionEntity.ExpiresAt = DateTime.Now + expiresIn;
+        userSessionEntity.ExpiresAt = DateTime.UtcNow + expiresIn;
         userSessionEntity.RefreshToken = TokenGenerator.GenerateRefreshToken();
         
-        EntityEntry<Entities.UserSession> userSessionUpdatedEntity = _dbContext.UserSessions.Update(userSessionEntity);
+       _dbContext.UserSessions.Update(userSessionEntity);
         _dbContext.SaveChanges();
         
-        return _mapper.Map<UserSession>(userSessionUpdatedEntity);
+        return _mapper.Map<UserSession>(userSessionEntity);
     }
 }
