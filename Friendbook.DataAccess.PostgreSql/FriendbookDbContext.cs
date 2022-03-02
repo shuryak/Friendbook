@@ -13,6 +13,9 @@ public class FriendbookDbContext : DbContext
     {
         modelBuilder.Entity<User>()
             .HasAlternateKey(u => u.Nickname);
+
+        modelBuilder.Entity<UserSession>()
+            .HasAlternateKey(us => us.RefreshToken);
     }
     
     public DbSet<User> Users { get; set; }

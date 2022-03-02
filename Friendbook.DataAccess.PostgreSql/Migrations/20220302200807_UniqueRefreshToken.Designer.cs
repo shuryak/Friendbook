@@ -3,6 +3,7 @@ using System;
 using Friendbook.DataAccess.PostgreSql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Friendbook.DataAccess.PostgreSql.Migrations
 {
     [DbContext(typeof(FriendbookDbContext))]
-    partial class FriendbookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220302200807_UniqueRefreshToken")]
+    partial class UniqueRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
