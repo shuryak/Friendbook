@@ -9,14 +9,14 @@ namespace Friendbook.Tests;
 public class FollowersServiceTests
 {
     private Mock<IFollowerPairRepository> _followerPairRepositoryMock;
-    private Mock<IUserProfileRepository> _userProfileRepositoryMock;
+    private Mock<IUserRepository> _userProfileRepositoryMock;
     private IFollowersService _followersService;
 
     [SetUp]
     public void SetUp()
     {
         _followerPairRepositoryMock = new Mock<IFollowerPairRepository>();
-        _userProfileRepositoryMock = new Mock<IUserProfileRepository>();
+        _userProfileRepositoryMock = new Mock<IUserRepository>();
         _followersService = new FollowersService(_followerPairRepositoryMock.Object, _userProfileRepositoryMock.Object);
     }
 

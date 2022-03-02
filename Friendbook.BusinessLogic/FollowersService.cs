@@ -6,12 +6,12 @@ namespace Friendbook.BusinessLogic;
 public class FollowersService : IFollowersService
 {
     private readonly IFollowerPairRepository _followerPairRepository;
-    private readonly IUserProfileRepository _userProfileRepository;
+    private readonly IUserRepository _userRepository;
 
-    public FollowersService(IFollowerPairRepository followerPairRepository, IUserProfileRepository userProfileRepository)
+    public FollowersService(IFollowerPairRepository followerPairRepository, IUserRepository userRepository)
     {
         _followerPairRepository = followerPairRepository;
-        _userProfileRepository = userProfileRepository;
+        _userRepository = userRepository;
     }
 
     public bool Follow(int followerId, int followingId)
@@ -36,7 +36,7 @@ public class FollowersService : IFollowersService
     {
         int[] followers = _followerPairRepository.GetFollowersIds(userProfileId, offset, limit);
 
-        IEnumerable<UserProfile> followersList = _userProfileRepository.GetManyByIds(followers);
+        IEnumerable<UserProfile> followersList = _userRepository.GetManyByIds(followers);
         return followersList;
     }
 
@@ -44,7 +44,7 @@ public class FollowersService : IFollowersService
     {
         int[] followers = _followerPairRepository.GetFollowingsIds(userProfileId, offset, limit);
 
-        IEnumerable<UserProfile> followingsList = _userProfileRepository.GetManyByIds(followers);
+        IEnumerable<UserProfile> followingsList = _userRepository.GetManyByIds(followers);
         return followingsList;
     }
 
@@ -52,7 +52,7 @@ public class FollowersService : IFollowersService
     {
         int[] followers = _followerPairRepository.GetFriendsIds(userProfileId, offset, limit);
 
-        IEnumerable<UserProfile> friendsList = _userProfileRepository.GetManyByIds(followers);
+        IEnumerable<UserProfile> friendsList = _userRepository.GetManyByIds(followers);
         return friendsList;
     }
 

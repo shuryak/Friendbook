@@ -2,7 +2,7 @@ using Friendbook.Domain.Models;
 
 namespace Friendbook.Domain;
 
-public interface IUserProfileService
+public interface IUserService
 {
     bool Create(UserProfile userProfile);
     UserProfile GetById(int id);

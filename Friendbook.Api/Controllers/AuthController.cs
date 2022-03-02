@@ -13,14 +13,14 @@ namespace Friendbook.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IConfiguration _configuration;
-    private readonly IUserProfileService _userProfileService;
+    private readonly IUserService _userService;
     private readonly IMapper _mapper;
     private readonly PasswordHasher<UserProfile> _passwordHasher;
         
-    public AuthController(IConfiguration configuration, IUserProfileService userProfileService, IMapper mapper)
+    public AuthController(IConfiguration configuration, IUserService userService, IMapper mapper)
     {
         _configuration = configuration;
-        _userProfileService = userProfileService;
+        _userService = userService;
         _mapper = mapper;
         _passwordHasher = new PasswordHasher<UserProfile>();
     }
@@ -28,7 +28,7 @@ public class AuthController : ControllerBase
     [HttpPost]
     public ActionResult<AuthenticateUserResponseDto> Login(AuthenticateUserRequestDto dto)
     {
-        UserProfile? userProfile = _userProfileService.GetByNickname(dto.Nickname);
+        UserProfile? userProfile = _userService.GetByNickname(dto.Nickname);
 
         if (_passwordHasher.VerifyHashedPassword(userProfile, userProfile.PasswordHash, dto.Password) 
             != PasswordVerificationResult.Success)
@@ -50,6 +50,6 @@ public class AuthController : ControllerBase
         UserProfile? userProfile = _mapper.Map<UserProfile>(dto);
         userProfile.PasswordHash = _passwordHasher.HashPassword(userProfile, dto.Password);
         
-        return _userProfileService.Create(userProfile);
+        return _userService.Create(userProfile);
     }
 }

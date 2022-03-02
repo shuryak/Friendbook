@@ -17,10 +17,10 @@ using Friendbook.Api.Middleware;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 
-builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IFollowerPairRepository, FollowerPairRepository>();
 
-builder.Services.AddTransient<IUserProfileService, UserProfileService>();
+builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IFollowersService, FollowersService>();
     
 builder.Services.AddTransient<IValidator<UserProfile>, UserProfileValidator>();

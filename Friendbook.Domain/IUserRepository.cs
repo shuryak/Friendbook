@@ -2,7 +2,7 @@ using Friendbook.Domain.Models;
 
 namespace Friendbook.Domain;
 
-public interface IUserProfileRepository
+public interface IUserRepository
 {
     void Create(UserProfile userProfile);
     IEnumerable<UserProfile> GetList(int offset, int limit);

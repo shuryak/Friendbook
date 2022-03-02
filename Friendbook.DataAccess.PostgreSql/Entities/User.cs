@@ -2,12 +2,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Friendbook.DataAccess.PostgreSql.Entities;
 
-public class UserProfile
+public class User
 {
     [Key]
     public int Id { get; set; }
-
-    [Required]
+    
     public string Nickname { get; set; } = string.Empty;
     
     [Required]
@@ -21,4 +20,9 @@ public class UserProfile
 
     [Required]
     public string PasswordHash { get; set; } = string.Empty;
+    
+    [Required]
+    public DateTime CreatedAt { get; set; }
+    
+    public List<UserSession>? UserSessions { get; set; } = new();
 }

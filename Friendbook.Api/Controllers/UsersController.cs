@@ -10,13 +10,13 @@ namespace Friendbook.Api.Controllers;
 [Route("api/[controller].[action]")]
 public class UsersController : ControllerBase
 {
-    private readonly IUserProfileService _userProfileService;
+    private readonly IUserService _userService;
     private readonly IFollowersService _followersService;
     private readonly IMapper _mapper;
 
-    public UsersController(IUserProfileService userProfileService, IFollowersService followersService, IMapper mapper)
+    public UsersController(IUserService userService, IFollowersService followersService, IMapper mapper)
     {
-        _userProfileService = userProfileService;
+        _userService = userService;
         _followersService = followersService;
         _mapper = mapper;
     }
@@ -36,7 +36,7 @@ public class UsersController : ControllerBase
     [HttpPost]
     public ActionResult<List<ShowUserProfileDto>> GetList(LimitsDto dto)
     {
-        IEnumerable<UserProfile> result = _userProfileService.GetList(dto.Offset, dto.Limit);
+        IEnumerable<UserProfile> result = _userService.GetList(dto.Offset, dto.Limit);
 
         List<ShowUserProfileDto> mappedResult = _mapper.Map<List<ShowUserProfileDto>>(result);
         
@@ -46,7 +46,7 @@ public class UsersController : ControllerBase
     [HttpPost]
     public ActionResult<List<ShowUserProfileDto>> GetFollowers(GetRelationsDto dto)
     {
-        UserProfile userProfile = _userProfileService.GetByNickname(dto.Nickname);
+        UserProfile userProfile = _userService.GetByNickname(dto.Nickname);
 
         IEnumerable<UserProfile> result = _followersService.GetFollowers(userProfile.Id, dto.Offset, dto.Limit);
 
@@ -58,7 +58,7 @@ public class UsersController : ControllerBase
     [HttpPost]
     public ActionResult<List<ShowUserProfileDto>> GetFollowings(GetRelationsDto dto)
     {
-        UserProfile userProfile = _userProfileService.GetByNickname(dto.Nickname);
+        UserProfile userProfile = _userService.GetByNickname(dto.Nickname);
 
         IEnumerable<UserProfile> result = _followersService.GetFollowings(userProfile.Id, dto.Offset, dto.Limit);
 
@@ -70,7 +70,7 @@ public class UsersController : ControllerBase
     [HttpPost]
     public ActionResult<List<ShowUserProfileDto>> GetFriends(GetRelationsDto dto)
     {
-        UserProfile userProfile = _userProfileService.GetByNickname(dto.Nickname);
+        UserProfile userProfile = _userService.GetByNickname(dto.Nickname);
 
         IEnumerable<UserProfile> result = _followersService.GetFriends(userProfile.Id, dto.Offset, dto.Limit);
 

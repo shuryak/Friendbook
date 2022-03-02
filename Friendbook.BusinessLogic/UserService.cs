@@ -5,14 +5,14 @@ using Friendbook.Domain.Models;
 
 namespace Friendbook.BusinessLogic;
 
-public class UserProfileService : IUserProfileService
+public class UserService : IUserService
 {
-    private readonly IUserProfileRepository _userProfileRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IValidator<UserProfile> _userProfileValidator;
 
-    public UserProfileService(IUserProfileRepository userProfileRepository, IValidator<UserProfile> userProfileValidator)
+    public UserService(IUserRepository userRepository, IValidator<UserProfile> userProfileValidator)
     {
-        _userProfileRepository = userProfileRepository;
+        _userRepository = userRepository;
         _userProfileValidator = userProfileValidator;
     }
 
@@ -20,24 +20,24 @@ public class UserProfileService : IUserProfileService
     {
         bool isValid = Validate(userProfile);
         
-        if (isValid) _userProfileRepository.Create(userProfile);
+        if (isValid) _userRepository.Create(userProfile);
 
         return isValid;
     }
 
     public UserProfile GetById(int id)
     {
-        return _userProfileRepository.GetById(id);
+        return _userRepository.GetById(id);
     }
 
     public UserProfile GetByNickname(string nickname)
     {
-        return _userProfileRepository.GetByNickname(nickname);
+        return _userRepository.GetByNickname(nickname);
     }
 
     public IEnumerable<UserProfile> GetList(int offset = 0, int limit = 10)
     {
-        return _userProfileRepository.GetList(offset, limit);
+        return _userRepository.GetList(offset, limit);
     }
 
     private bool Validate(UserProfile userProfile)
