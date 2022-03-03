@@ -44,9 +44,14 @@ public class UserSessionRepository : IUserSessionRepository
         Entities.UserSession? userSessionEntity = _dbContext.UserSessions
             .FirstOrDefault(x => x.RefreshToken == refreshToken);
 
-        if (userSessionEntity == null || userSessionEntity.ExpiresAt < DateTime.UtcNow)
+        if (userSessionEntity == null)
         {
             return null;
+        }
+
+        if (userSessionEntity.ExpiresAt < DateTime.UtcNow)
+        {
+            return _mapper.Map<UserSession>(userSessionEntity);
         }
         
         userSessionEntity.ExpiresAt = DateTime.UtcNow + expiresIn;

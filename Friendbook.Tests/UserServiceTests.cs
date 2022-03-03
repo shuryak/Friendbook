@@ -6,10 +6,10 @@ using NUnit.Framework;
 
 namespace Friendbook.Tests;
 
-public class UserProfileServiceTests
+public class UserServiceTests
 {
-    private IUserService _userService;
-    private Mock<IUserRepository> _userProfileRepository;
+    private IUserService _userService = null!;
+    private Mock<IUserRepository> _userProfileRepository = null!;
 
     [SetUp]
     public void SetUp()
@@ -58,7 +58,7 @@ public class UserProfileServiceTests
     }
 
     [Test]
-    public void GetById_ShouldReturnUserProfile()
+    public void GetById_ShouldReturnUser()
     {
         // Arrange
         const int userProfileId = 1;
@@ -66,14 +66,14 @@ public class UserProfileServiceTests
         _userProfileRepository.Setup(x => x.GetById(userProfileId)).Verifiable();
         
         // Act
-        User result = _userService.GetById(userProfileId);
+        User? result = _userService.GetById(userProfileId);
 
         // Assert
         _userProfileRepository.Verify(x => x.GetById(userProfileId), Times.Once);
     }
 
     [Test]
-    public void GetByNickname_ShouldReturnUserProfile()
+    public void GetByNickname_ShouldReturnUser()
     {
         // Arrange
         const string userProfileNickname = "shuryak";
@@ -81,7 +81,7 @@ public class UserProfileServiceTests
         _userProfileRepository.Setup(x => x.GetByNickname(userProfileNickname)).Verifiable();
         
         // Act
-        User result = _userService.GetByNickname(userProfileNickname);
+        User? result = _userService.GetByNickname(userProfileNickname);
 
         // Assert
         _userProfileRepository.Verify(x => x.GetByNickname(userProfileNickname), Times.Once);

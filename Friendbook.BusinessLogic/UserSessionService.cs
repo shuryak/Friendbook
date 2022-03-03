@@ -12,18 +12,32 @@ public class UserSessionService : IUserSessionService
         _userSessionRepository = userSessionRepository;
     }
     
-    public UserSession? Create(User user, TimeSpan expiresIn)
+    public UserSession Create(User user, TimeSpan expiresIn)
     {
         return _userSessionRepository.Create(user, expiresIn);
     }
 
     public UserSession? GetById(int sessionId)
     {
-        return _userSessionRepository.GetById(sessionId);
+        UserSession? userSession = _userSessionRepository.GetById(sessionId);
+        
+        if (userSession == null || userSession.ExpiresAt < DateTime.UtcNow)
+        {
+            return null;
+        }
+
+        return userSession;
     }
 
     public UserSession? Renew(string refreshToken, TimeSpan expiresIn)
     {
-        return _userSessionRepository.Update(refreshToken, expiresIn);
+        UserSession? userSession = _userSessionRepository.Update(refreshToken, expiresIn);
+
+        if (userSession == null || userSession.ExpiresAt < DateTime.UtcNow)
+        {
+            return null;
+        }
+
+        return userSession;
     }
 }
