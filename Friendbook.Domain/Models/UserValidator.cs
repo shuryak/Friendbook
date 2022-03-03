@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace Friendbook.Domain.Models;
 
-public class UserProfileValidator : AbstractValidator<UserProfile>
+public class UserValidator : AbstractValidator<User>
 {
-    public UserProfileValidator()
+    public UserValidator()
     {
         RuleFor(p => p.Nickname)
             .Must(x => x.All(char.IsLetterOrDigit))

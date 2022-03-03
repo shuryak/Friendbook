@@ -9,14 +9,14 @@ namespace Friendbook.Tests;
 public class FollowersServiceTests
 {
     private Mock<IFollowerPairRepository> _followerPairRepositoryMock;
-    private Mock<IUserProfileRepository> _userProfileRepositoryMock;
+    private Mock<IUserRepository> _userProfileRepositoryMock;
     private IFollowersService _followersService;
 
     [SetUp]
     public void SetUp()
     {
         _followerPairRepositoryMock = new Mock<IFollowerPairRepository>();
-        _userProfileRepositoryMock = new Mock<IUserProfileRepository>();
+        _userProfileRepositoryMock = new Mock<IUserRepository>();
         _followersService = new FollowersService(_followerPairRepositoryMock.Object, _userProfileRepositoryMock.Object);
     }
 
@@ -148,7 +148,7 @@ public class FollowersServiceTests
             .Verifiable();
 
         // Act
-        IEnumerable<UserProfile> result = _followersService.GetFollowers(userProfileId);
+        IEnumerable<User> result = _followersService.GetFollowers(userProfileId);
 
         // Assert
         _followerPairRepositoryMock.VerifyAll();
@@ -171,7 +171,7 @@ public class FollowersServiceTests
             .Verifiable();
         
         // Act
-        IEnumerable<UserProfile> result = _followersService.GetFollowings(userProfileId);
+        IEnumerable<User> result = _followersService.GetFollowings(userProfileId);
 
         // Assert
         _followerPairRepositoryMock.VerifyAll();
@@ -194,7 +194,7 @@ public class FollowersServiceTests
             .Verifiable();
         
         // Act
-        IEnumerable<UserProfile> result = _followersService.GetFriends(userProfileId);
+        IEnumerable<User> result = _followersService.GetFriends(userProfileId);
 
         // Assert
         _followerPairRepositoryMock.VerifyAll();

@@ -13,43 +13,76 @@ namespace Friendbook.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IConfiguration _configuration;
-    private readonly IUserProfileService _userProfileService;
+    private readonly IUserService _userService;
+    private readonly IUserSessionService _userSessionService;
     private readonly IMapper _mapper;
-    private readonly PasswordHasher<UserProfile> _passwordHasher;
+    private readonly PasswordHasher<User> _passwordHasher;
         
-    public AuthController(IConfiguration configuration, IUserProfileService userProfileService, IMapper mapper)
+    public AuthController(IConfiguration configuration, IUserService userService, IUserSessionService userSessionService, IMapper mapper)
     {
         _configuration = configuration;
-        _userProfileService = userProfileService;
+        _userService = userService;
+        _userSessionService = userSessionService;
         _mapper = mapper;
-        _passwordHasher = new PasswordHasher<UserProfile>();
+        _passwordHasher = new PasswordHasher<User>();
     }
         
     [HttpPost]
+    public ActionResult<bool> Register(CreateUserDto dto)
+    {
+        User? userProfile = _mapper.Map<User>(dto);
+        userProfile.PasswordHash = _passwordHasher.HashPassword(userProfile, dto.Password);
+        
+        return _userService.Create(userProfile);
+    }
+    
+    [HttpPost]
     public ActionResult<AuthenticateUserResponseDto> Login(AuthenticateUserRequestDto dto)
     {
-        UserProfile? userProfile = _userProfileService.GetByNickname(dto.Nickname);
+        User? user = _userService.GetByNickname(dto.Nickname);
 
-        if (_passwordHasher.VerifyHashedPassword(userProfile, userProfile.PasswordHash, dto.Password) 
+        if (user == null || _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password) 
             != PasswordVerificationResult.Success)
         {
             return BadRequest("Incorrect nickname or password");
         }
 
-        string token = _configuration.GenerateJwtToken(userProfile);
-
-        AuthenticateUserResponseDto responseDto = _mapper.Map<AuthenticateUserResponseDto>(userProfile);
-        responseDto.Token = token;
-
-        return responseDto;
-    }
-    
-    [HttpPost]
-    public ActionResult<bool> Register(CreateUserProfileDto dto)
-    {
-        UserProfile? userProfile = _mapper.Map<UserProfile>(dto);
-        userProfile.PasswordHash = _passwordHasher.HashPassword(userProfile, dto.Password);
+        UserSession userSession = _userSessionService.Create(user, TimeSpan.FromDays(7));
         
-        return _userProfileService.Create(userProfile);
+        string accessToken = _configuration.GenerateJwtToken(user);
+
+        return new AuthenticateUserResponseDto
+        {
+            AccessToken = accessToken,
+            RefreshToken = userSession.RefreshToken,
+            RefreshTokenExpiresAt = userSession.ExpiresAt
+        };
+    }
+
+    [HttpPost]
+    public ActionResult<AuthenticateUserResponseDto> RefreshTokenPair(RefreshTokenPairRequestDto dto)
+    {
+        UserSession? userSession = _userSessionService.Renew(dto.RefreshToken, TimeSpan.FromDays(7));
+
+        if (userSession == null)
+        {
+            return BadRequest("Refresh token expired or invalid");
+        }
+        
+        User? user = _userService.GetById(userSession.UserId);
+
+        if (user == null)
+        {
+            return BadRequest("User does not exists");
+        }
+        
+        string accessToken = _configuration.GenerateJwtToken(user);
+        
+        return new AuthenticateUserResponseDto
+        {
+            AccessToken = accessToken,
+            RefreshToken = userSession.RefreshToken,
+            RefreshTokenExpiresAt = userSession.ExpiresAt
+        };
     }
 }

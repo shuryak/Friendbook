@@ -8,7 +8,7 @@ namespace Friendbook.Api.Helpers;
 
 public static class AuthHelper
 {
-    public static string GenerateJwtToken(this IConfiguration configuration, UserProfile userProfile)
+    public static string GenerateJwtToken(this IConfiguration configuration, User user)
     {
         string issuer = configuration["JwtConfiguration:Issuer"];
         string audience = configuration["JwtConfiguration:Audience"];
@@ -16,7 +16,7 @@ public static class AuthHelper
         
         List<Claim> claims = new List<Claim>()
         {
-            new Claim(ClaimTypes.Name, userProfile.Nickname)
+            new Claim(ClaimTypes.Name, user.Nickname)
         };
 
         JwtSecurityToken jwt = new JwtSecurityToken(

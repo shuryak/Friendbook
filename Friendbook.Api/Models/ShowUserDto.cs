@@ -1,6 +1,6 @@
 namespace Friendbook.Api.Models;
 
-public class ShowUserProfileDto
+public class ShowUserDto
 {
     public int Id { get; set; }
 

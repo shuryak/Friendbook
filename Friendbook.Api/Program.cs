@@ -17,13 +17,15 @@ using Friendbook.Api.Middleware;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 
-builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IFollowerPairRepository, FollowerPairRepository>();
+builder.Services.AddTransient<IUserSessionRepository, UserSessionRepository>();
 
-builder.Services.AddTransient<IUserProfileService, UserProfileService>();
+builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IFollowersService, FollowersService>();
+builder.Services.AddTransient<IUserSessionService, UserSessionService>();
     
-builder.Services.AddTransient<IValidator<UserProfile>, UserProfileValidator>();
+builder.Services.AddTransient<IValidator<User>, UserValidator>();
 
 builder.Services.AddAutoMapper(typeof(DataAccessMappingProfile), typeof(DtoMappingProfile));
 builder.Services.AddControllers()

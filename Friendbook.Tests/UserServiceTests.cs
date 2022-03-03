@@ -6,16 +6,16 @@ using NUnit.Framework;
 
 namespace Friendbook.Tests;
 
-public class UserProfileServiceTests
+public class UserServiceTests
 {
-    private IUserProfileService _userProfileService;
-    private Mock<IUserProfileRepository> _userProfileRepository;
+    private IUserService _userService = null!;
+    private Mock<IUserRepository> _userProfileRepository = null!;
 
     [SetUp]
     public void SetUp()
     {
-        _userProfileRepository = new Mock<IUserProfileRepository>();
-        _userProfileService = new UserProfileService(_userProfileRepository.Object, new UserProfileValidator());
+        _userProfileRepository = new Mock<IUserRepository>();
+        _userService = new UserService(_userProfileRepository.Object, new UserValidator());
     }
     
     [Test]
@@ -26,15 +26,15 @@ public class UserProfileServiceTests
         int monthOfBirth, int dayOfBirth)
     {
         // Arrange
-        UserProfile userProfile = new UserProfile(nickname, firstName, lastName, yearOfBirth, monthOfBirth, dayOfBirth);
+        User user = new User(nickname, firstName, lastName, yearOfBirth, monthOfBirth, dayOfBirth);
         
-        _userProfileRepository.Setup(x => x.Create(userProfile)).Verifiable();
+        _userProfileRepository.Setup(x => x.Create(user)).Verifiable();
 
         // Act
-        bool result = _userProfileService.Create(userProfile);
+        bool result = _userService.Create(user);
 
         // Assert
-        _userProfileRepository.Verify(x => x.Create(userProfile), Times.Once());
+        _userProfileRepository.Verify(x => x.Create(user), Times.Once());
         Assert.IsTrue(result);
     }
 
@@ -48,17 +48,17 @@ public class UserProfileServiceTests
         int monthOfBirth, int dayOfBirth)
     {
         // Arrange
-        UserProfile userProfile = new UserProfile(nickname, firstName, lastName, yearOfBirth, monthOfBirth, dayOfBirth);
+        User user = new User(nickname, firstName, lastName, yearOfBirth, monthOfBirth, dayOfBirth);
 
         // Act
-        bool result = _userProfileService.Create(userProfile);
+        bool result = _userService.Create(user);
 
         // Assert
         Assert.IsFalse(result);
     }
 
     [Test]
-    public void GetById_ShouldReturnUserProfile()
+    public void GetById_ShouldReturnUser()
     {
         // Arrange
         const int userProfileId = 1;
@@ -66,14 +66,14 @@ public class UserProfileServiceTests
         _userProfileRepository.Setup(x => x.GetById(userProfileId)).Verifiable();
         
         // Act
-        UserProfile result = _userProfileService.GetById(userProfileId);
+        User? result = _userService.GetById(userProfileId);
 
         // Assert
         _userProfileRepository.Verify(x => x.GetById(userProfileId), Times.Once);
     }
 
     [Test]
-    public void GetByNickname_ShouldReturnUserProfile()
+    public void GetByNickname_ShouldReturnUser()
     {
         // Arrange
         const string userProfileNickname = "shuryak";
@@ -81,7 +81,7 @@ public class UserProfileServiceTests
         _userProfileRepository.Setup(x => x.GetByNickname(userProfileNickname)).Verifiable();
         
         // Act
-        UserProfile result = _userProfileService.GetByNickname(userProfileNickname);
+        User? result = _userService.GetByNickname(userProfileNickname);
 
         // Assert
         _userProfileRepository.Verify(x => x.GetByNickname(userProfileNickname), Times.Once);
@@ -94,7 +94,7 @@ public class UserProfileServiceTests
         _userProfileRepository.Setup(x => x.GetList(0, 10));
 
         // Act
-        IEnumerable<UserProfile> userProfiles = _userProfileService.GetList(0, 10);
+        IEnumerable<User> userProfiles = _userService.GetList(0, 10);
 
         // Assert
         _userProfileRepository.Verify(x => x.GetList(0, 10), Times.Once);
