@@ -27,7 +27,9 @@ public class MessagesController : ControllerBase
     [Authorize]
     public ActionResult<Chat> CreateChat(CreateChatDto dto)
     {
-        return _messagesService.CreateChat(new Chat(dto.ChatName));
+        User httpContextUser = (User)HttpContext.Items["User"]!;
+
+        return _messagesService.CreateChat(new Chat(dto.ChatName, httpContextUser.Id));
     }
     
     [HttpPost]
