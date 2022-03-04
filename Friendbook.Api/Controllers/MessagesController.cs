@@ -1,8 +1,8 @@
-using Friendbook.Api.Helpers;
 using Friendbook.Api.Hubs;
 using Friendbook.Api.Models.Messages;
 using Friendbook.Domain.Models;
 using Friendbook.Domain.ServiceAbstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
@@ -13,13 +13,13 @@ namespace Friendbook.Api.Controllers;
 public class MessagesController : ControllerBase
 {
     private readonly IMessagesService _messagesService;
-    private readonly IUserProfileService _userProfileService;
+    private readonly IUserService _userService;
     private readonly IHubContext<MessagesHub> _hubContext;
     
-    public MessagesController(IMessagesService messagesService, IUserProfileService userProfileService, IHubContext<MessagesHub> hubContext)
+    public MessagesController(IMessagesService messagesService, IUserService userService, IHubContext<MessagesHub> hubContext)
     {
         _messagesService = messagesService;
-        _userProfileService = userProfileService;
+        _userService = userService;
         _hubContext = hubContext;
     }
 
@@ -34,7 +34,7 @@ public class MessagesController : ControllerBase
     [Authorize]
     public ActionResult<bool> AddChatMember(CreateChatMemberDto dto)
     {
-        UserProfile? httpContextUser = (UserProfile)HttpContext.Items["User"]!;
+        User? httpContextUser = (User)HttpContext.Items["User"]!;
 
         return _messagesService.AddChatMember(dto.ChatId, httpContextUser.Id);
     }
@@ -43,7 +43,7 @@ public class MessagesController : ControllerBase
     [Authorize]
     public async Task<ActionResult<bool>> Send(SendMessageDto dto)
     {
-        UserProfile? httpContextUser = (UserProfile)HttpContext.Items["User"]!;
+        User? httpContextUser = (User)HttpContext.Items["User"]!;
 
         Message? sentMessage = _messagesService.Send(new Message(dto.ChatId, httpContextUser.Id, dto.Text));
         

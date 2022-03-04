@@ -9,9 +9,9 @@ namespace Friendbook.Tests;
 
 public class MessagesServiceTests
 {
-    private Mock<IChatsRepository> _chatsRepositoryMock;
-    private Mock<IMessagesRepository> _messagesRepositoryMock;
-    private IMessagesService _messagesService;
+    private Mock<IChatsRepository> _chatsRepositoryMock = null!;
+    private Mock<IMessagesRepository> _messagesRepositoryMock = null!;
+    private IMessagesService _messagesService = null!;
 
     [SetUp]
     public void SetUp()

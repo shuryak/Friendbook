@@ -1,8 +1,8 @@
 namespace Friendbook.Domain.Models;
 
-public class UserProfile
+public class User
 {
-    public UserProfile(string nickname, string firstName, string lastName, int yearOfBirth, int monthOfBirth, int dayOfBirth)
+    public User(string nickname, string firstName, string lastName, int yearOfBirth, int monthOfBirth, int dayOfBirth)
     {
         Nickname = nickname;
         FirstName = firstName;
@@ -10,7 +10,7 @@ public class UserProfile
         DateOfBirth = new DateOnly(yearOfBirth, monthOfBirth, dayOfBirth);
     }
 
-    public UserProfile()
+    public User()
     {
     }
     
