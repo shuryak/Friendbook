@@ -16,9 +16,9 @@ public class MessagesService : IMessagesService
         _messagesRepository = messagesRepository;
     }
 
-    public Chat CreateChat(Chat chat)
+    public Chat CreateChat(string chatName, int creatorId)
     {
-        return _chatsRepository.Create(chat);
+        return _chatsRepository.Create(chatName, creatorId);
     }
 
     public bool AddChatMember(int chatId, int memberId)

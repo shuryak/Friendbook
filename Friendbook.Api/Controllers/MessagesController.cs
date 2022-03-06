@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Friendbook.Api.Hubs;
 using Friendbook.Api.Models.Messages;
 using Friendbook.Domain.Models;
@@ -25,29 +26,53 @@ public class MessagesController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    public ActionResult<Chat> CreateChat(CreateChatDto dto)
+    public ActionResult<Chat>? CreateChat(CreateChatDto dto)
     {
-        User httpContextUser = (User)HttpContext.Items["User"]!;
+        string? userNameIdentifier = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        string? userNickname = User.Identity?.Name;
 
-        return _messagesService.CreateChat(new Chat(dto.ChatName, httpContextUser.Id));
+        if (userNameIdentifier == null || userNickname == null)
+        {
+            return null;
+        }
+
+        int userId = Convert.ToInt32(userNameIdentifier);
+        
+        return _messagesService.CreateChat(dto.ChatName, userId);
     }
     
     [HttpPost]
     [Authorize]
-    public ActionResult<bool> AddChatMember(CreateChatMemberDto dto)
+    public ActionResult<bool>? AddChatMember(CreateChatMemberDto dto)
     {
-        User? httpContextUser = (User)HttpContext.Items["User"]!;
+        string? userNameIdentifier = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        string? userNickname = User.Identity?.Name;
 
-        return _messagesService.AddChatMember(dto.ChatId, httpContextUser.Id);
+        if (userNameIdentifier == null || userNickname == null)
+        {
+            return null;
+        }
+
+        int userId = Convert.ToInt32(userNameIdentifier);
+
+        return _messagesService.AddChatMember(dto.ChatId, userId);
     }
     
     [HttpPost]
     [Authorize]
-    public async Task<ActionResult<bool>> Send(SendMessageDto dto)
+    public async Task<ActionResult<bool>?> Send(SendMessageDto dto)
     {
-        User? httpContextUser = (User)HttpContext.Items["User"]!;
+        string? userNameIdentifier = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        string? userNickname = User.Identity?.Name;
 
-        Message? sentMessage = _messagesService.Send(new Message(dto.ChatId, httpContextUser.Id, dto.Text));
+        if (userNameIdentifier == null || userNickname == null)
+        {
+            return null;
+        }
+
+        int userId = Convert.ToInt32(userNameIdentifier);
+
+        Message? sentMessage = _messagesService.Send(new Message(dto.ChatId, userId, dto.Text));
         
         await _hubContext.Clients.All.SendAsync("Send", sentMessage);
 

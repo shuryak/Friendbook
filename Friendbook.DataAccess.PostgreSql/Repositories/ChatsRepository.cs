@@ -18,13 +18,24 @@ public class ChatsRepository : IChatsRepository
         _mapper = mapper;
     }
 
-    public Chat Create(Chat chat)
+    public Chat Create(string chatName, int creatorId)
     {
-        Entities.Chats.Chat chatEntity = _mapper.Map<Entities.Chats.Chat>(chat);
+        DateTime dateTime = DateTime.UtcNow;
 
-        chatEntity.CreatedAt = DateTime.UtcNow;
-        
+        Entities.Chats.Chat chatEntity = new Entities.Chats.Chat
+        {
+            ChatName = chatName,
+            CreatedAt = dateTime
+        };
+
         _dbContext.Chats.Add(chatEntity);
+        _dbContext.ChatMembers.Add(new ChatMember
+        {
+            Chat = chatEntity,
+            MemberId = creatorId,
+            Role = "creator",
+            InvitedAt = dateTime
+        });
         _dbContext.SaveChanges();
 
         return _mapper.Map<Chat>(chatEntity);

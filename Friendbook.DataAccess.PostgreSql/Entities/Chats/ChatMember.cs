@@ -14,5 +14,7 @@ public class ChatMember
     
     public int MemberId { get; set; }
     
+    public string Role { get; set; }
+    
     public DateTime InvitedAt { get; set; }
 }
