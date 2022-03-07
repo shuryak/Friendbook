@@ -48,20 +48,20 @@ public class ChatsRepository : IChatsRepository
         return chatEntity == null ? null : _mapper.Map<Chat>(chatEntity);
     }
 
-    public bool IsJoined(int chatId, int userProfileId)
+    public bool IsJoined(int chatId, int userId)
     {
         return _dbContext.Chats
             .Where(x => x.Id == chatId)
-            .Select(x => x.ChatMembers.Any(x => x.MemberId == userProfileId))
+            .Select(x => x.ChatMembers != null && x.ChatMembers.Any(chatMember => chatMember.MemberId == userId))
             .FirstOrDefault();
     }
 
-    public void AddMember(int chatId, int userProfileId)
+    public void AddMember(int chatId, int userId)
     {
         _dbContext.ChatMembers.Add(new ChatMember
         {
             ChatId = chatId,
-            MemberId = userProfileId,
+            MemberId = userId,
             InvitedAt = DateTime.UtcNow
         });
 

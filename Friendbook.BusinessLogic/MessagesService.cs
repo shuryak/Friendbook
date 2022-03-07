@@ -37,7 +37,12 @@ public class MessagesService : IMessagesService
 
         return true;
     }
-    
+
+    public bool IsChatMember(int chatId, int memberId)
+    {
+        return _chatsRepository.IsJoined(chatId, memberId);
+    }
+
     public Message? Send(Message message)
     {
         Chat? chat = _chatsRepository.GetById(message.ChatId);

@@ -6,6 +6,6 @@ public interface IChatsRepository
 {
     Chat Create(string chatName, int creatorId);
     Chat? GetById(int id);
-    bool IsJoined(int chatId, int userProfileId);
-    void AddMember(int chatId, int userProfileId);
+    bool IsJoined(int chatId, int userId);
+    void AddMember(int chatId, int userId);
 }

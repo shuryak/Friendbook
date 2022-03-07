@@ -74,7 +74,7 @@ public class MessagesController : ControllerBase
 
         Message? sentMessage = _messagesService.Send(new Message(dto.ChatId, userId, dto.Text));
         
-        await _hubContext.Clients.All.SendAsync("Send", sentMessage);
+        await _hubContext.Clients.Group($"chat{dto.ChatId}").SendAsync("new-message", sentMessage);
 
         return sentMessage != null;
     }
