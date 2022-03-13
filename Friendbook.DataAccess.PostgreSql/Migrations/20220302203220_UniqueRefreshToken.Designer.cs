@@ -3,6 +3,7 @@ using System;
 using Friendbook.DataAccess.PostgreSql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Friendbook.DataAccess.PostgreSql.Migrations
 {
     [DbContext(typeof(FriendbookDbContext))]
-    partial class FriendbookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220302203220_UniqueRefreshToken")]
+    partial class UniqueRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,84 +23,6 @@ namespace Friendbook.DataAccess.PostgreSql.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("Friendbook.DataAccess.PostgreSql.Entities.Chats.Chat", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ChatName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Chats");
-                });
-
-            modelBuilder.Entity("Friendbook.DataAccess.PostgreSql.Entities.Chats.ChatMember", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ChatId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("InvitedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("MemberId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChatId");
-
-                    b.ToTable("ChatMembers");
-                });
-
-            modelBuilder.Entity("Friendbook.DataAccess.PostgreSql.Entities.Chats.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ChatId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("SenderId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("SentAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChatId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("Messages");
-                });
 
             modelBuilder.Entity("Friendbook.DataAccess.PostgreSql.Entities.FollowerPair", b =>
                 {
@@ -187,34 +111,6 @@ namespace Friendbook.DataAccess.PostgreSql.Migrations
                     b.ToTable("UserSessions");
                 });
 
-            modelBuilder.Entity("Friendbook.DataAccess.PostgreSql.Entities.Chats.ChatMember", b =>
-                {
-                    b.HasOne("Friendbook.DataAccess.PostgreSql.Entities.Chats.Chat", "Chat")
-                        .WithMany("ChatMembers")
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Chat");
-                });
-
-            modelBuilder.Entity("Friendbook.DataAccess.PostgreSql.Entities.Chats.Message", b =>
-                {
-                    b.HasOne("Friendbook.DataAccess.PostgreSql.Entities.Chats.Chat", "Chat")
-                        .WithMany()
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Friendbook.DataAccess.PostgreSql.Entities.Chats.ChatMember", "ChatMember")
-                        .WithMany()
-                        .HasForeignKey("SenderId");
-
-                    b.Navigation("Chat");
-
-                    b.Navigation("ChatMember");
-                });
-
             modelBuilder.Entity("Friendbook.DataAccess.PostgreSql.Entities.UserSession", b =>
                 {
                     b.HasOne("Friendbook.DataAccess.PostgreSql.Entities.User", "User")
@@ -224,11 +120,6 @@ namespace Friendbook.DataAccess.PostgreSql.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Friendbook.DataAccess.PostgreSql.Entities.Chats.Chat", b =>
-                {
-                    b.Navigation("ChatMembers");
                 });
 
             modelBuilder.Entity("Friendbook.DataAccess.PostgreSql.Entities.User", b =>
