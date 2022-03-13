@@ -1,8 +1,6 @@
 using AutoMapper;
 using Friendbook.DataAccess.PostgreSql.Entities.Chats;
-using Friendbook.Domain.Models;
 using Friendbook.Domain.RepositoryAbstractions;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Chat = Friendbook.Domain.Models.Chat;
 
 namespace Friendbook.DataAccess.PostgreSql.Repositories;
@@ -62,6 +60,7 @@ public class ChatsRepository : IChatsRepository
         {
             ChatId = chatId,
             MemberId = userId,
+            Role = "member",
             InvitedAt = DateTime.UtcNow
         });
 

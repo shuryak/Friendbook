@@ -17,5 +17,8 @@ public class DataAccessMappingProfile : Profile
 
         CreateMap<Entities.Chats.Chat, Chat>()
             .ReverseMap();
+
+        CreateMap<Entities.Chats.Message, Message>()
+            .ReverseMap();
     }
 }

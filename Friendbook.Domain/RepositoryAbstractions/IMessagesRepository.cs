@@ -5,6 +5,5 @@ namespace Friendbook.Domain.RepositoryAbstractions;
 public interface IMessagesRepository
 {
     Message? Create(Message message);
-    IEnumerable<Message> GetList(int offset, int limit);
-    Message GetById(int id);
+    IEnumerable<Message> GetList(int chatId, int start, int offset);
 }

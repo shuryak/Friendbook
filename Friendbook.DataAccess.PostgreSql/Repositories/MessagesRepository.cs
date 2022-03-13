@@ -1,3 +1,5 @@
+using System.Linq;
+using AutoMapper;
 using Friendbook.DataAccess.PostgreSql.Entities.Chats;
 using Friendbook.Domain.RepositoryAbstractions;
 using Message = Friendbook.Domain.Models.Message;
@@ -7,10 +9,12 @@ namespace Friendbook.DataAccess.PostgreSql.Repositories;
 public class MessagesRepository : IMessagesRepository
 {
     private readonly FriendbookDbContext _dbContext;
+    private readonly IMapper _mapper;
 
-    public MessagesRepository(FriendbookDbContext dbContext)
+    public MessagesRepository(FriendbookDbContext dbContext, IMapper mapper)
     {
         _dbContext = dbContext;
+        _mapper = mapper;
     }
 
     public Message? Create(Message message)
@@ -34,13 +38,15 @@ public class MessagesRepository : IMessagesRepository
         return new Message(messageEntity.Id, messageEntity.ChatId, messageEntity.ChatMember.MemberId, messageEntity.Text, messageEntity.SentAt);
     }
 
-    public IEnumerable<Message> GetList(int offset, int limit)
+    public IEnumerable<Message> GetList(int chatId, int start, int offset)
     {
-        throw new NotImplementedException();
-    }
+        List<Message> messages = _dbContext.Messages
+            .Where(x => x.ChatId == chatId)
+            .Skip(start)
+            .Take(offset)
+            .Select(message => _mapper.Map<Message>(message))
+            .ToList();
 
-    public Message GetById(int id)
-    {
-        throw new NotImplementedException();
+        return messages;
     }
 }

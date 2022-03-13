@@ -55,7 +55,7 @@ public class MessagesController : ControllerBase
 
         int userId = Convert.ToInt32(userNameIdentifier);
 
-        return _messagesService.AddChatMember(dto.ChatId, userId);
+        return _messagesService.AddChatMember(dto.ChatId, userId, dto.MemberId);
     }
     
     [HttpPost]

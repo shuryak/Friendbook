@@ -2,6 +2,10 @@ namespace Friendbook.Domain.Models;
 
 public class Message
 {
+    public Message()
+    {
+    }
+    
     public Message(int chatId, int senderId, string text)
     {
         ChatId = chatId;
@@ -18,7 +22,7 @@ public class Message
         SentAt = sentAt;
     }
     
-    public int Id { get; }
+    public int Id { get; set; }
     
     public int ChatId { get; set; }
     

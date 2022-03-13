@@ -1,4 +1,3 @@
-using Friendbook.Domain;
 using Friendbook.Domain.Models;
 using Friendbook.Domain.RepositoryAbstractions;
 using Friendbook.Domain.ServiceAbstractions;
@@ -9,31 +8,66 @@ public class MessagesService : IMessagesService
 {
     private readonly IChatsRepository _chatsRepository;
     private readonly IMessagesRepository _messagesRepository;
+    private readonly IUserRepository _userRepository;
 
-    public MessagesService(IChatsRepository chatsRepository, IMessagesRepository messagesRepository)
+    public MessagesService(IChatsRepository chatsRepository, IMessagesRepository messagesRepository, IUserRepository userRepository)
     {
         _chatsRepository = chatsRepository;
         _messagesRepository = messagesRepository;
+        _userRepository = userRepository;
+    }
+    
+    public Message? Send(Message message)
+    {
+        bool isJoined = _chatsRepository.IsJoined(message.ChatId, message.SenderId);
+        Chat? chat = _chatsRepository.GetById(message.ChatId);
+
+        if (!isJoined || chat == null)
+        {
+            return null;
+        }
+
+        return _messagesRepository.Create(message);
     }
 
-    public Chat CreateChat(string chatName, int creatorId)
+    public Chat? CreateChat(string chatName, int creatorId)
     {
+        if (_userRepository.GetById(creatorId) == null)
+        {
+            return null;
+        }
+        
         return _chatsRepository.Create(chatName, creatorId);
     }
 
-    public bool AddChatMember(int chatId, int memberId)
+    public bool AddChatMember(int chatId, int memberId, int memberToAddId)
     {
-        if (_chatsRepository.GetById(chatId) == null)
-        {
-            return false;
-        };
-        
-        if (_chatsRepository.IsJoined(chatId, memberId))
+        if (memberId == memberToAddId)
         {
             return false;
         }
         
-        _chatsRepository.AddMember(chatId, memberId);
+        if (_chatsRepository.GetById(chatId) == null)
+        {
+            return false;
+        }
+        
+        if (_userRepository.GetById(memberId) == null || _userRepository.GetById(memberToAddId) == null)
+        {
+            return false;
+        }
+
+        if (!_chatsRepository.IsJoined(chatId, memberId))
+        {
+            return false;
+        }
+        
+        if (_chatsRepository.IsJoined(chatId, memberToAddId))
+        {
+            return false;
+        }
+
+        _chatsRepository.AddMember(chatId, memberToAddId);
 
         return true;
     }
@@ -43,26 +77,13 @@ public class MessagesService : IMessagesService
         return _chatsRepository.IsJoined(chatId, memberId);
     }
 
-    public Message? Send(Message message)
+    public IEnumerable<Message>? GetList(int chatId, int memberId, int start, int offset)
     {
-        Chat? chat = _chatsRepository.GetById(message.ChatId);
-        bool isJoined = _chatsRepository.IsJoined(message.ChatId, message.SenderId);
-        
-        if (chat == null || !isJoined)
+        if (!_chatsRepository.IsJoined(chatId, memberId))
         {
             return null;
         }
-
-        return _messagesRepository.Create(message);
-    }
-
-    public Message GetById(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IEnumerable<Message> GetList(int start, int offset)
-    {
-        throw new NotImplementedException();
+        
+        return _messagesRepository.GetList(chatId, start, offset);
     }
 }
