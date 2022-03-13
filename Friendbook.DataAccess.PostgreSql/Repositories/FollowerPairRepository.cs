@@ -1,6 +1,7 @@
 using AutoMapper;
 using Friendbook.DataAccess.PostgreSql.Entities;
 using Friendbook.Domain;
+using Friendbook.Domain.RepositoryAbstractions;
 
 namespace Friendbook.DataAccess.PostgreSql.Repositories;
 

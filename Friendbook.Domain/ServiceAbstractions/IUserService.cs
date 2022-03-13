@@ -1,6 +1,6 @@
 using Friendbook.Domain.Models;
 
-namespace Friendbook.Domain;
+namespace Friendbook.Domain.ServiceAbstractions;
 
 public interface IUserService
 {

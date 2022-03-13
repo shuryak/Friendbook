@@ -1,6 +1,7 @@
 using Friendbook.BusinessLogic;
-using Friendbook.Domain;
 using Friendbook.Domain.Models;
+using Friendbook.Domain.RepositoryAbstractions;
+using Friendbook.Domain.ServiceAbstractions;
 using Moq;
 using NUnit.Framework;
 
@@ -9,13 +10,13 @@ namespace Friendbook.Tests;
 public class UserServiceTests
 {
     private IUserService _userService = null!;
-    private Mock<IUserRepository> _userProfileRepository = null!;
+    private Mock<IUserRepository> _userRepository = null!;
 
     [SetUp]
     public void SetUp()
     {
-        _userProfileRepository = new Mock<IUserRepository>();
-        _userService = new UserService(_userProfileRepository.Object, new UserValidator());
+        _userRepository = new Mock<IUserRepository>();
+        _userService = new UserService(_userRepository.Object, new UserValidator());
     }
     
     [Test]
@@ -28,13 +29,13 @@ public class UserServiceTests
         // Arrange
         User user = new User(nickname, firstName, lastName, yearOfBirth, monthOfBirth, dayOfBirth);
         
-        _userProfileRepository.Setup(x => x.Create(user)).Verifiable();
+        _userRepository.Setup(x => x.Create(user)).Verifiable();
 
         // Act
         bool result = _userService.Create(user);
 
         // Assert
-        _userProfileRepository.Verify(x => x.Create(user), Times.Once());
+        _userRepository.Verify(x => x.Create(user), Times.Once());
         Assert.IsTrue(result);
     }
 
@@ -61,42 +62,42 @@ public class UserServiceTests
     public void GetById_ShouldReturnUser()
     {
         // Arrange
-        const int userProfileId = 1;
+        const int userId = 1;
 
-        _userProfileRepository.Setup(x => x.GetById(userProfileId)).Verifiable();
+        _userRepository.Setup(x => x.GetById(userId)).Verifiable();
         
         // Act
-        User? result = _userService.GetById(userProfileId);
+        User? result = _userService.GetById(userId);
 
         // Assert
-        _userProfileRepository.Verify(x => x.GetById(userProfileId), Times.Once);
+        _userRepository.Verify(x => x.GetById(userId), Times.Once);
     }
 
     [Test]
     public void GetByNickname_ShouldReturnUser()
     {
         // Arrange
-        const string userProfileNickname = "shuryak";
+        const string userNickname = "shuryak";
 
-        _userProfileRepository.Setup(x => x.GetByNickname(userProfileNickname)).Verifiable();
+        _userRepository.Setup(x => x.GetByNickname(userNickname)).Verifiable();
         
         // Act
-        User? result = _userService.GetByNickname(userProfileNickname);
+        User? result = _userService.GetByNickname(userNickname);
 
         // Assert
-        _userProfileRepository.Verify(x => x.GetByNickname(userProfileNickname), Times.Once);
+        _userRepository.Verify(x => x.GetByNickname(userNickname), Times.Once);
     }
 
     [Test]
-    public void GetList_ShouldReturnUserProfileList()
+    public void GetList_ShouldReturnUserList()
     {
         // Arrange
-        _userProfileRepository.Setup(x => x.GetList(0, 10));
+        _userRepository.Setup(x => x.GetList(0, 10));
 
         // Act
-        IEnumerable<User> userProfiles = _userService.GetList(0, 10);
+        IEnumerable<User> users = _userService.GetList(0, 10);
 
         // Assert
-        _userProfileRepository.Verify(x => x.GetList(0, 10), Times.Once);
+        _userRepository.Verify(x => x.GetList(0, 10), Times.Once);
     }
 }

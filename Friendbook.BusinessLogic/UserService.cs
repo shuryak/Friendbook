@@ -1,19 +1,20 @@
 using FluentValidation;
 using FluentValidation.Results;
-using Friendbook.Domain;
 using Friendbook.Domain.Models;
+using Friendbook.Domain.RepositoryAbstractions;
+using Friendbook.Domain.ServiceAbstractions;
 
 namespace Friendbook.BusinessLogic;
 
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
-    private readonly IValidator<User> _userProfileValidator;
+    private readonly IValidator<User> _userValidator;
 
-    public UserService(IUserRepository userRepository, IValidator<User> userProfileValidator)
+    public UserService(IUserRepository userRepository, IValidator<User> userValidator)
     {
         _userRepository = userRepository;
-        _userProfileValidator = userProfileValidator;
+        _userValidator = userValidator;
     }
 
     public bool Create(User user)
@@ -42,7 +43,7 @@ public class UserService : IUserService
 
     private bool Validate(User user)
     {
-        ValidationResult result = _userProfileValidator.Validate(user);
+        ValidationResult result = _userValidator.Validate(user);
 
         return result.IsValid;
     }

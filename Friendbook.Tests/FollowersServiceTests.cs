@@ -1,6 +1,8 @@
 using Friendbook.BusinessLogic;
 using Friendbook.Domain;
 using Friendbook.Domain.Models;
+using Friendbook.Domain.RepositoryAbstractions;
+using Friendbook.Domain.ServiceAbstractions;
 using Moq;
 using NUnit.Framework;
 
@@ -8,16 +10,16 @@ namespace Friendbook.Tests;
 
 public class FollowersServiceTests
 {
-    private Mock<IFollowerPairRepository> _followerPairRepositoryMock;
-    private Mock<IUserRepository> _userProfileRepositoryMock;
-    private IFollowersService _followersService;
+    private Mock<IFollowerPairRepository> _followerPairRepositoryMock = null!;
+    private Mock<IUserRepository> _userRepositoryMock = null!;
+    private IFollowersService _followersService = null!;
 
     [SetUp]
     public void SetUp()
     {
         _followerPairRepositoryMock = new Mock<IFollowerPairRepository>();
-        _userProfileRepositoryMock = new Mock<IUserRepository>();
-        _followersService = new FollowersService(_followerPairRepositoryMock.Object, _userProfileRepositoryMock.Object);
+        _userRepositoryMock = new Mock<IUserRepository>();
+        _followersService = new FollowersService(_followerPairRepositoryMock.Object, _userRepositoryMock.Object);
     }
 
     [Test]
@@ -84,7 +86,7 @@ public class FollowersServiceTests
     }
 
     [Test]
-    public void Follow_TwiceToOneUserProfile_ShouldReturnFalse()
+    public void Follow_TwiceToOneUser_ShouldReturnFalse()
     {
         // Arrange
         _followerPairRepositoryMock
@@ -136,69 +138,69 @@ public class FollowersServiceTests
     public void GetFollowers_ShouldReturnFollowersList()
     {
         // Arrange
-        const int userProfileId = 1;
+        const int userId = 1;
 
         _followerPairRepositoryMock
-            .Setup(x => x.GetFollowersIds(userProfileId, 0, 10))
+            .Setup(x => x.GetFollowersIds(userId, 0, 10))
             .Returns(() => new[] {2, 5, 3})
             .Verifiable();
         
-        _userProfileRepositoryMock
+        _userRepositoryMock
             .Setup(x => x.GetManyByIds(new[] {2, 5, 3}))
             .Verifiable();
 
         // Act
-        IEnumerable<User> result = _followersService.GetFollowers(userProfileId);
+        IEnumerable<User> result = _followersService.GetFollowers(userId);
 
         // Assert
         _followerPairRepositoryMock.VerifyAll();
-        _userProfileRepositoryMock.VerifyAll();
+        _userRepositoryMock.VerifyAll();
     }
 
     [Test]
     public void GetFollowings_ShouldReturnFollowingsList()
     {
         // Arrange
-        const int userProfileId = 1;
+        const int userId = 1;
         
         _followerPairRepositoryMock
-            .Setup(x => x.GetFollowingsIds(userProfileId, 0, 10))
+            .Setup(x => x.GetFollowingsIds(userId, 0, 10))
             .Returns(() => new[] {2, 5, 3})
             .Verifiable();
 
-        _userProfileRepositoryMock
+        _userRepositoryMock
             .Setup(x => x.GetManyByIds(new[] {2, 5, 3}))
             .Verifiable();
         
         // Act
-        IEnumerable<User> result = _followersService.GetFollowings(userProfileId);
+        IEnumerable<User> result = _followersService.GetFollowings(userId);
 
         // Assert
         _followerPairRepositoryMock.VerifyAll();
-        _userProfileRepositoryMock.VerifyAll();
+        _userRepositoryMock.VerifyAll();
     }
 
     [Test]
     public void GetFriends_ShouldReturnFriendsList()
     {
         // Arrange
-        const int userProfileId = 1;
+        const int userId = 1;
         
         _followerPairRepositoryMock
-            .Setup(x => x.GetFriendsIds(userProfileId, 0, 10))
+            .Setup(x => x.GetFriendsIds(userId, 0, 10))
             .Returns(() => new[] {2, 5, 3})
             .Verifiable();
 
-        _userProfileRepositoryMock
+        _userRepositoryMock
             .Setup(x => x.GetManyByIds(new[] {2, 5, 3}))
             .Verifiable();
         
         // Act
-        IEnumerable<User> result = _followersService.GetFriends(userProfileId);
+        IEnumerable<User> result = _followersService.GetFriends(userId);
 
         // Assert
         _followerPairRepositoryMock.VerifyAll();
-        _userProfileRepositoryMock.VerifyAll();
+        _userRepositoryMock.VerifyAll();
     }
     
     [Test]
@@ -282,7 +284,7 @@ public class FollowersServiceTests
     }
     
     [Test]
-    public void Unfollow_TwiceFromOneUserProfile_ShouldReturnFalse()
+    public void Unfollow_TwiceFromOneUser_ShouldReturnFalse()
     {
         // Arrange
         _followerPairRepositoryMock

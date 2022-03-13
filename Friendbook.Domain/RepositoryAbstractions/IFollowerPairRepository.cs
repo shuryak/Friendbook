@@ -1,4 +1,4 @@
-namespace Friendbook.Domain;
+namespace Friendbook.Domain.RepositoryAbstractions;
 
 public interface IFollowerPairRepository
 {

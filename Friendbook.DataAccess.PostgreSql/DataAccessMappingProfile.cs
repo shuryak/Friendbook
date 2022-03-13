@@ -14,5 +14,11 @@ public class DataAccessMappingProfile : Profile
             .ForMember(x => x.Id,
                 s => s.MapFrom(x => x.SessionId))
             .ReverseMap();
+
+        CreateMap<Entities.Chats.Chat, Chat>()
+            .ReverseMap();
+
+        CreateMap<Entities.Chats.Message, Message>()
+            .ReverseMap();
     }
 }

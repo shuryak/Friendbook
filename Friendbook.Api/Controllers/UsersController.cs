@@ -1,7 +1,11 @@
 using AutoMapper;
+using Friendbook.Api.Helpers;
 using Friendbook.Api.Models;
+using Friendbook.Api.Models.Users;
 using Friendbook.Domain;
 using Friendbook.Domain.Models;
+using Friendbook.Domain.ServiceAbstractions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Friendbook.Api.Controllers;

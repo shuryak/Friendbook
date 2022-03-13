@@ -1,18 +1,27 @@
-namespace Friendbook.Api.Models;
+using System.ComponentModel.DataAnnotations;
 
-public class ShowUserDto
+namespace Friendbook.Api.Models.Users;
+
+public class CreateUserDto
 {
-    public int Id { get; set; }
-
+    [Required]
     public string Nickname { get; set; } = string.Empty;
-
+    
+    [Required]
     public string FirstName { get; set; } = string.Empty;
     
+    [Required]
     public string LastName { get; set; } = string.Empty;
-    
+
+    [Required]
     public int DayOfBirth { get; set; }
     
+    [Required]
     public int MonthOfBirth { get; set; }
-    
+
+    [Required]
     public int YearOfBirth { get; set; }
+
+    [Required]
+    public string Password { get; set; } = string.Empty;
 }

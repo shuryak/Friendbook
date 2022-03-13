@@ -1,6 +1,7 @@
 using AutoMapper;
 using Friendbook.Domain;
 using Friendbook.Domain.Models;
+using Friendbook.Domain.RepositoryAbstractions;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Friendbook.DataAccess.PostgreSql.Repositories;

@@ -3,6 +3,7 @@ using System;
 using Friendbook.DataAccess.PostgreSql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Friendbook.DataAccess.PostgreSql.Migrations
 {
     [DbContext(typeof(FriendbookDbContext))]
-    partial class FriendbookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220222212555_ChatsAndMessages")]
+    partial class ChatsAndMessages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,10 +61,6 @@ namespace Friendbook.DataAccess.PostgreSql.Migrations
                     b.Property<int>("MemberId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ChatId");
@@ -81,9 +79,6 @@ namespace Friendbook.DataAccess.PostgreSql.Migrations
                     b.Property<int>("ChatId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("SenderId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("SentAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -94,8 +89,6 @@ namespace Friendbook.DataAccess.PostgreSql.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ChatId");
-
-                    b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
                 });
@@ -122,16 +115,13 @@ namespace Friendbook.DataAccess.PostgreSql.Migrations
                     b.ToTable("FollowerPairs");
                 });
 
-            modelBuilder.Entity("Friendbook.DataAccess.PostgreSql.Entities.User", b =>
+            modelBuilder.Entity("Friendbook.DataAccess.PostgreSql.Entities.UserProfile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateOnly>("DateOfBirth")
                         .HasColumnType("date");
@@ -154,37 +144,7 @@ namespace Friendbook.DataAccess.PostgreSql.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Nickname");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Friendbook.DataAccess.PostgreSql.Entities.UserSession", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("RefreshToken")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RefreshToken")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserSessions");
+                    b.ToTable("UserProfiles");
                 });
 
             modelBuilder.Entity("Friendbook.DataAccess.PostgreSql.Entities.Chats.ChatMember", b =>
@@ -206,34 +166,12 @@ namespace Friendbook.DataAccess.PostgreSql.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Friendbook.DataAccess.PostgreSql.Entities.Chats.ChatMember", "ChatMember")
-                        .WithMany()
-                        .HasForeignKey("SenderId");
-
                     b.Navigation("Chat");
-
-                    b.Navigation("ChatMember");
-                });
-
-            modelBuilder.Entity("Friendbook.DataAccess.PostgreSql.Entities.UserSession", b =>
-                {
-                    b.HasOne("Friendbook.DataAccess.PostgreSql.Entities.User", "User")
-                        .WithMany("UserSessions")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Friendbook.DataAccess.PostgreSql.Entities.Chats.Chat", b =>
                 {
                     b.Navigation("ChatMembers");
-                });
-
-            modelBuilder.Entity("Friendbook.DataAccess.PostgreSql.Entities.User", b =>
-                {
-                    b.Navigation("UserSessions");
                 });
 #pragma warning restore 612, 618
         }

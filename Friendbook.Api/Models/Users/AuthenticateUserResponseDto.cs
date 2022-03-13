@@ -1,6 +1,4 @@
-using Friendbook.DataAccess.PostgreSql.Entities;
-
-namespace Friendbook.Api.Models;
+namespace Friendbook.Api.Models.Users;
 
 public class AuthenticateUserResponseDto
 {
